@@ -250,6 +250,7 @@
 
     /* ── Day 전환 ────────────────────────────────────────── */
     function switchDay(idx) {
+      closeSearch();
       if (idx === activeDay) return;
       activeDay = idx;
       document.querySelectorAll('.sidebar-day-tab').forEach((b, i) => {
