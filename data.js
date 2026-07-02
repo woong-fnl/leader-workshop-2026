@@ -35,9 +35,9 @@ const EVENT = {
     { name: "김수인", title: "Team Leader",   division: "CEO Direct",            team: "Influencer Team",          phone: "010-8964-0615" },
     { name: "김재환", title: "Part Leader",   division: "CEO Direct",            team: "F&B Part",                 phone: "010-3221-2594" },
     { name: "송유진", title: "Part Leader",   division: "CEO Direct",            team: "Beauty Part",              phone: "010-9464-8203" },
-    { name: "황대로", title: "Staff",         division: "CEO Direct",            team: "HR&GA Team",               phone: "" },
-    { name: "조원웅", title: "Staff",         division: "CEO Direct",            team: "HR&GA Team",               phone: "" },
-    { name: "김지민", title: "Staff",         division: "CEO Direct",            team: "HR&GA Team",               phone: "" },
+    { name: "황대로", title: "Staff",         division: "CEO Direct",            team: "HR&GA Team",               phone: "010-2446-6517" },
+    { name: "조원웅", title: "Staff",         division: "CEO Direct",            team: "HR&GA Team",               phone: "010-2060-3816" },
+    { name: "김지민", title: "Staff",         division: "CEO Direct",            team: "HR&GA Team",               phone: "010-5469-5442" },
   ],
 
   // ── 숙소 정보 (포유포레) ──────────────────────────────────
