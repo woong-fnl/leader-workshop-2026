@@ -962,8 +962,20 @@
         acc.smokingAreas.forEach(s => {
           const card = document.createElement('div');
           card.className = 'smoking-spot-card';
-          if (s.image) {
-            card.innerHTML += `<img class="smoking-spot-img" src="images/facilities/${escAttr(s.image)}" alt="${escAttr(s.spot)}" loading="lazy">`;
+          // images 배열 우선, 없으면 단일 image 폴백
+          const imgList = s.images && s.images.length ? s.images : (s.image ? [s.image] : []);
+          if (imgList.length) {
+            const imgRow = document.createElement('div');
+            imgRow.className = 'smoking-spot-imgs';
+            imgList.forEach(fname => {
+              const img = document.createElement('img');
+              img.className = 'smoking-spot-img';
+              img.src = `images/facilities/${escAttr(fname)}`;
+              img.alt = escAttr(s.spot);
+              img.loading = 'lazy';
+              imgRow.appendChild(img);
+            });
+            card.appendChild(imgRow);
           }
           const body = document.createElement('div');
           body.className = 'smoking-spot-body';
@@ -1238,7 +1250,11 @@
         `${a.name} ${a.title} ${a.division} ${a.team}`.toLowerCase().includes(q)
       );
 
-      if (!schedHits.length && !tipHits.length && !attHits.length) {
+      const actHits = (EVENT.activities || []).filter(a =>
+        `${a.title} ${a.desc} ${a.note} ${a.location} ${a.category}`.toLowerCase().includes(q)
+      );
+
+      if (!schedHits.length && !tipHits.length && !attHits.length && !actHits.length) {
         results.innerHTML = `<div class="search-empty">
           "<strong>${escHtml(raw)}</strong>" 검색 결과가 없습니다.
         </div>`;
@@ -1268,6 +1284,31 @@
             </div>
             <span class="search-badge ${di === 0 ? 'day1' : 'day2'}">${escHtml(day.label)}</span>`;
           const go = () => { switchDay(di); closeSearch(); };
+          el.addEventListener('click', go);
+          el.addEventListener('keydown', ev => { if (ev.key === 'Enter') go(); });
+          wrap.appendChild(el);
+        });
+      }
+
+      if (actHits.length) {
+        const lbl = document.createElement('p');
+        lbl.className = 'search-section-label';
+        lbl.textContent = '즐길거리 & 식사';
+        wrap.appendChild(lbl);
+        actHits.forEach(a => {
+          const el = document.createElement('div');
+          el.className = 'search-result-item';
+          el.setAttribute('role', 'button');
+          el.setAttribute('tabindex', '0');
+          const preview = a.desc ? a.desc.slice(0,60) + (a.desc.length > 60 ? '…' : '') : '';
+          el.innerHTML = `
+            <div class="search-result-meta">
+              <span class="search-result-title">${escHtml(a.title)}</span>
+              ${preview ? `<span class="search-result-desc">${escHtml(preview)}</span>` : ''}
+              <span class="search-result-time">${escHtml(a.time)}</span>
+            </div>
+            <span class="search-badge ${a.day === 0 ? 'day1' : 'day2'}">${a.day === 0 ? 'Day 1' : 'Day 2'}</span>`;
+          const go = () => { switchToActivity(a.id); closeSearch(); };
           el.addEventListener('click', go);
           el.addEventListener('keydown', ev => { if (ev.key === 'Enter') go(); });
           wrap.appendChild(el);
