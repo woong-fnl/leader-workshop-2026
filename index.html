@@ -520,6 +520,19 @@
           }
         }
 
+        // 숙소 서브탭 크로스링크 처리
+        if (item.accTabId) {
+          row.classList.add('has-link');
+          const contentEl = row.querySelector('.tl-card, .tl-compact');
+          if (contentEl) {
+            const chip = document.createElement('span');
+            chip.className = 'tl-link-chip';
+            chip.innerHTML = `<i class="ti ti-building" aria-hidden="true"></i> 숙소 안내에서 보기`;
+            chip.addEventListener('click', e => { e.stopPropagation(); switchToAccTab(item.accTabId); });
+            contentEl.appendChild(chip);
+          }
+        }
+
         // 이동·휴식 제외 전체 항목 클릭 → 상세 모달
         const isExcluded = item.type === 'move' || item.title === '휴식 시간';
         if (!isExcluded) {
@@ -559,6 +572,14 @@
     /* ════════════════════════════════════════════════════════
        크로스링크 헬퍼
        ════════════════════════════════════════════════════════ */
+    function switchToAccTab(tabId) {
+      switchTab('accommodation');
+      requestAnimationFrame(() => {
+        const btn = document.querySelector(`[data-acc-tab="${CSS.escape(tabId)}"]`);
+        if (btn) btn.click();
+      });
+    }
+
     function switchToActivity(actId) {
       switchTab('activities');
       requestAnimationFrame(() => {
@@ -1075,6 +1096,13 @@
         btn.className = 'tl-dm-btn';
         btn.innerHTML = `<i class="ti ti-building" aria-hidden="true"></i> 숙소 안내 보기`;
         btn.onclick = () => { closeTlModal(); switchTab('accommodation'); };
+        actions.appendChild(btn);
+      }
+      if (item.accTabId) {
+        const btn = document.createElement('button');
+        btn.className = 'tl-dm-btn';
+        btn.innerHTML = `<i class="ti ti-coffee" aria-hidden="true"></i> 숙소 > Day 2 조식 보기`;
+        btn.onclick = () => { closeTlModal(); switchToAccTab(item.accTabId); };
         actions.appendChild(btn);
       }
 
