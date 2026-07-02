@@ -752,6 +752,86 @@ footer strong { color:rgba(255,255,255,.6); }
    시설 상세 모달
    ════════════════════════════════════════════════════════════ */
 
+/* ── 참석자 상세 모달 ────────────────────────────────────────── */
+.att-modal {
+  position:fixed; inset:0; z-index:500;
+  display:flex; align-items:flex-end;
+  visibility:hidden; pointer-events:none;
+}
+@media (min-width:768px) {
+  .att-modal { align-items:center; justify-content:center; left:var(--sidebar-w); }
+}
+.att-modal.is-open { visibility:visible; pointer-events:auto; }
+
+.att-modal-bd {
+  position:absolute; inset:0; background:rgba(0,0,0,0);
+  transition:background .25s;
+}
+.att-modal.is-open .att-modal-bd { background:rgba(0,0,0,.52); }
+
+.att-modal-sheet {
+  position:relative; z-index:1; width:100%;
+  background:var(--surface); border-radius:20px 20px 0 0;
+  transform:translateY(100%); transition:transform .3s cubic-bezier(.4,0,.2,1);
+  overflow:hidden;
+}
+.att-modal.is-open .att-modal-sheet { transform:none; }
+
+@media (min-width:768px) {
+  .att-modal-sheet {
+    width:360px; border-radius:18px;
+    transform:translateY(12px) scale(.97); opacity:0;
+    transition:transform .25s, opacity .25s;
+  }
+  .att-modal.is-open .att-modal-sheet { transform:none; opacity:1; }
+}
+
+.att-modal-handle {
+  width:36px; height:4px; border-radius:2px;
+  background:var(--border); margin:.75rem auto .25rem; flex-shrink:0;
+}
+@media (min-width:768px) { .att-modal-handle { display:none; } }
+
+.att-modal-close {
+  position:absolute; top:.9rem; right:.9rem; z-index:2;
+  width:32px; height:32px; border-radius:50%; border:none; cursor:pointer;
+  background:var(--ground); color:var(--text-muted);
+  display:flex; align-items:center; justify-content:center; font-size:1rem;
+  transition:background .15s;
+}
+.att-modal-close:hover { background:var(--border); }
+
+.att-modal-body {
+  display:flex; flex-direction:column; align-items:center;
+  padding:2rem 1.5rem 2.5rem; gap:.5rem;
+}
+
+.att-modal-avatar {
+  width:72px; height:72px; border-radius:50%;
+  background:var(--avatar-color, #8A9BAD);
+  color:#fff; font-size:1.1rem; font-weight:800;
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:.5rem;
+}
+.att-modal-name  { font-size:1.3rem; font-weight:800; color:var(--navy-deep); }
+.att-modal-badge {
+  font-size:.72rem; font-weight:700; border-radius:6px; padding:.2rem .6rem;
+}
+.att-modal-team  { font-size:.8rem; color:var(--text-muted); text-align:center; line-height:1.5; }
+.att-modal-room  {
+  display:inline-flex; align-items:center; gap:.25rem;
+  font-size:.78rem; font-weight:600; color:var(--gold);
+}
+.att-modal-room .ti { font-size:.85rem; }
+.att-modal-phone {
+  display:flex; align-items:center; justify-content:center;
+  width:100%; margin-top:.75rem; padding:.85rem;
+  background:var(--navy-deep); color:#fff; border-radius:12px;
+  font-size:1rem; font-weight:700; text-decoration:none; letter-spacing:.04em;
+  transition:opacity .15s;
+}
+.att-modal-phone:hover { opacity:.85; }
+
 /* ── 타임라인 일정 상세 모달 ─────────────────────────────────── */
 .tl-detail-modal {
   position:fixed; inset:0; z-index:450;

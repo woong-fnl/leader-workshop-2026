@@ -120,6 +120,25 @@
     <p id="footer-info"></p>
   </footer>
 
+  <!-- ══ 참석자 상세 모달 ══════════════════════════════════════ -->
+  <div class="att-modal" id="att-modal" role="dialog" aria-modal="true" aria-labelledby="att-modal-name">
+    <div class="att-modal-bd" id="att-modal-bd"></div>
+    <div class="att-modal-sheet">
+      <div class="att-modal-handle" aria-hidden="true"></div>
+      <button class="att-modal-close" id="att-modal-close" aria-label="닫기">
+        <i class="ti ti-x" aria-hidden="true"></i>
+      </button>
+      <div class="att-modal-body">
+        <div class="att-modal-avatar" id="att-modal-avatar"></div>
+        <p  class="att-modal-name"  id="att-modal-name"></p>
+        <span class="att-modal-badge" id="att-modal-badge"></span>
+        <p  class="att-modal-team"  id="att-modal-team"></p>
+        <span class="att-modal-room" id="att-modal-room"></span>
+        <a  class="att-modal-phone" id="att-modal-phone" href="#"></a>
+      </div>
+    </div>
+  </div>
+
   <!-- ══ 타임라인 일정 상세 모달 ═══════════════════════════════ -->
   <div class="tl-detail-modal" id="tl-detail-modal" role="dialog" aria-modal="true" aria-labelledby="tl-dm-title">
     <div class="tl-detail-bd" id="tl-detail-bd"></div>
@@ -737,11 +756,14 @@
     }
 
     (function buildAttendeePanel() {
-      // 이름 → 객실번호 룩업
       const roomMap = {};
       (EVENT.accommodation.rooms || []).forEach(r => {
         r.occupants.forEach(name => { roomMap[name] = r.room; });
       });
+
+      // 직책 정렬 순서
+      const TITLE_ORDER = { 'CEO': 0, 'Group Leader': 1, 'Center Leader': 2, 'Team Leader': 3, 'Part Leader': 4, 'Staff': 5 };
+      const sorted = [...EVENT.attendees].sort((a, b) => (TITLE_ORDER[a.title] ?? 9) - (TITLE_ORDER[b.title] ?? 9));
 
       const panel = document.createElement('div');
       panel.className = 'main-panel';
@@ -759,9 +781,10 @@
       const grid = document.createElement('div');
       grid.className = 'attendee-grid';
 
-      EVENT.attendees.forEach(a => {
+      sorted.forEach(a => {
         const card = document.createElement('div');
         card.className = 'attendee-card';
+        card.style.cursor = 'pointer';
 
         const givenName = a.name.length >= 3 ? a.name.slice(1) : a.name;
         const teamLine = a.team && a.team !== '-'
@@ -777,6 +800,8 @@
             <span class="attendee-meta">${teamLine}</span>
             ${roomNum ? `<span class="attendee-room"><i class="ti ti-door" aria-hidden="true"></i>${escHtml(roomNum)}</span>` : ''}
           </div>`;
+
+        card.addEventListener('click', () => openAttModal(a, roomNum));
         grid.appendChild(card);
       });
 
@@ -785,6 +810,41 @@
       panel.appendChild(inner);
       panelWrap.appendChild(panel);
     })();
+
+    /* 참석자 상세 모달 */
+    function openAttModal(a, roomNum) {
+      const givenName = a.name.length >= 3 ? a.name.slice(1) : a.name;
+      $('att-modal-avatar').textContent = givenName;
+      $('att-modal-avatar').style.setProperty('--avatar-color', avatarColor(a.title));
+      $('att-modal-name').textContent  = a.name;
+      $('att-modal-badge').textContent = a.title;
+      $('att-modal-badge').className   = 'att-modal-badge ' + badgeClass(a.title);
+      $('att-modal-team').innerHTML    = a.team && a.team !== '-'
+        ? `${escHtml(a.division)} · ${escHtml(a.team)}`
+        : escHtml(a.division);
+
+      const roomEl  = $('att-modal-room');
+      if (roomNum) { roomEl.innerHTML = `<i class="ti ti-door" aria-hidden="true"></i>${escHtml(roomNum)}`; roomEl.hidden = false; }
+      else         { roomEl.hidden = true; }
+
+      const phoneEl = $('att-modal-phone');
+      if (a.phone) {
+        phoneEl.href        = `tel:${a.phone.replace(/-/g,'')}`;
+        phoneEl.textContent = a.phone;
+        phoneEl.hidden      = false;
+      } else {
+        phoneEl.hidden = true;
+      }
+
+      $('att-modal').classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeAttModal() {
+      $('att-modal').classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+    $('att-modal-bd').addEventListener('click', closeAttModal);
+    $('att-modal-close').addEventListener('click', closeAttModal);
 
     /* ════════════════════════════════════════════════════════
        패널 4 — 숙소 (포유포레)
@@ -1115,7 +1175,7 @@
     }
     $('tl-detail-bd').addEventListener('click', closeTlModal);
     $('tl-detail-close').addEventListener('click', closeTlModal);
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeTlModal(); closeFacModal(); } });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeAttModal(); closeTlModal(); closeFacModal(); } });
 
     openBtn.addEventListener('click', openSearch);
     closeBtn.addEventListener('click', closeSearch);
