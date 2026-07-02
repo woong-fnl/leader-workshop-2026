@@ -120,6 +120,25 @@
     <p id="footer-info"></p>
   </footer>
 
+  <!-- ══ 타임라인 일정 상세 모달 ═══════════════════════════════ -->
+  <div class="tl-detail-modal" id="tl-detail-modal" role="dialog" aria-modal="true" aria-labelledby="tl-dm-title">
+    <div class="tl-detail-bd" id="tl-detail-bd"></div>
+    <div class="tl-detail-sheet">
+      <div class="tl-detail-handle" aria-hidden="true"></div>
+      <button class="tl-detail-close" id="tl-detail-close" aria-label="닫기">
+        <i class="ti ti-x" aria-hidden="true"></i>
+      </button>
+      <div class="tl-detail-body">
+        <p class="tl-dm-time"  id="tl-dm-time"></p>
+        <p class="tl-dm-title" id="tl-dm-title"></p>
+        <p class="tl-dm-desc"  id="tl-dm-desc"></p>
+        <p class="tl-dm-note"  id="tl-dm-note"></p>
+        <div class="tl-dm-loc-wrap" id="tl-dm-loc-wrap"></div>
+        <div class="tl-dm-actions" id="tl-dm-actions"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- ══ 시설 상세 모달 ════════════════════════════════════════ -->
   <div class="fac-modal" id="fac-modal" role="dialog" aria-modal="true" aria-label="시설 상세">
     <div class="fac-modal-bd" id="fac-modal-bd"></div>
@@ -487,7 +506,7 @@
           row.appendChild(card);
         }
 
-        // 즐길거리&식사 크로스링크 처리
+        // 즐길거리&식사 크로스링크 처리 (chip만 유지)
         if (item.activityId) {
           row.id = 'tl-row-' + item.activityId;
           row.classList.add('has-link');
@@ -496,10 +515,21 @@
             const chip = document.createElement('span');
             chip.className = 'tl-link-chip';
             chip.innerHTML = `<i class="ti ti-star" aria-hidden="true"></i> 즐길거리&amp;식사 보기`;
-            const openAct = e => { e.stopPropagation(); switchToActivity(item.activityId); };
-            chip.addEventListener('click', openAct);
+            chip.addEventListener('click', e => { e.stopPropagation(); switchToActivity(item.activityId); });
             contentEl.appendChild(chip);
-            contentEl.addEventListener('click', () => switchToActivity(item.activityId));
+          }
+        }
+
+        // 이동·휴식 제외 전체 항목 클릭 → 상세 모달
+        const isExcluded = item.type === 'move' || item.title === '휴식 시간';
+        if (!isExcluded) {
+          const clickable = row.querySelector('.tl-card, .tl-compact');
+          if (clickable) {
+            clickable.style.cursor = 'pointer';
+            clickable.addEventListener('click', e => {
+              if (e.target.closest('a') || e.target.closest('.tl-link-chip')) return;
+              openTlModal(item);
+            });
           }
         }
 
@@ -1008,6 +1038,56 @@
     }
     $('fac-modal-bd').addEventListener('click', closeFacModal);
     $('fac-modal-close').addEventListener('click', closeFacModal);
+
+    /* ── 타임라인 일정 상세 모달 ────────────────────────────── */
+    function openTlModal(item) {
+      const modal = $('tl-detail-modal');
+      $('tl-dm-time').textContent  = item.time  || '';
+      $('tl-dm-title').textContent = item.title || '';
+
+      const descEl = $('tl-dm-desc');
+      if (item.desc) { descEl.innerHTML = escHtml(item.desc).replace(/\n/g,'<br>'); descEl.hidden = false; }
+      else           { descEl.innerHTML = ''; descEl.hidden = true; }
+
+      const noteEl = $('tl-dm-note');
+      if (item.note) { noteEl.textContent = item.note; noteEl.hidden = false; }
+      else           { noteEl.textContent = ''; noteEl.hidden = true; }
+
+      const locWrap = $('tl-dm-loc-wrap');
+      locWrap.innerHTML = '';
+      if (item.location) {
+        locWrap.innerHTML = item.locationUrl
+          ? `<a class="tl-dm-loc" href="${escAttr(item.locationUrl)}" target="_blank" rel="noopener noreferrer"><i class="ti ti-map-pin" aria-hidden="true"></i>${escHtml(item.location)}</a>`
+          : `<span class="tl-dm-loc"><i class="ti ti-map-pin" aria-hidden="true"></i>${escHtml(item.location)}</span>`;
+      }
+
+      const actions = $('tl-dm-actions');
+      actions.innerHTML = '';
+      if (item.activityId) {
+        const btn = document.createElement('button');
+        btn.className = 'tl-dm-btn';
+        btn.innerHTML = `<i class="ti ti-star" aria-hidden="true"></i> 즐길거리&amp;식사에서 보기`;
+        btn.onclick = () => { closeTlModal(); switchToActivity(item.activityId); };
+        actions.appendChild(btn);
+      }
+      if (item.title && item.title.includes('룸 배정')) {
+        const btn = document.createElement('button');
+        btn.className = 'tl-dm-btn';
+        btn.innerHTML = `<i class="ti ti-building" aria-hidden="true"></i> 숙소 안내 보기`;
+        btn.onclick = () => { closeTlModal(); switchTab('accommodation'); };
+        actions.appendChild(btn);
+      }
+
+      modal.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeTlModal() {
+      $('tl-detail-modal').classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+    $('tl-detail-bd').addEventListener('click', closeTlModal);
+    $('tl-detail-close').addEventListener('click', closeTlModal);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeTlModal(); closeFacModal(); } });
 
     openBtn.addEventListener('click', openSearch);
     closeBtn.addEventListener('click', closeSearch);
