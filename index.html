@@ -9,24 +9,38 @@
 </head>
 <body>
 
+  <!-- ══ PIN 게이트 ════════════════════════════════════════════ -->
+  <div class="pin-gate" id="pin-gate" role="dialog" aria-modal="true" aria-label="접근 인증">
+    <div class="pin-box">
+      <div class="pin-logo-wrap">
+        <img src="images/logo.png" alt="에프앤엘" class="pin-logo-img"
+             onerror="this.hidden=true;this.nextElementSibling.hidden=false">
+        <span class="pin-logo-text" hidden>에프앤엘</span>
+      </div>
+      <p class="pin-title">2026 에프앤엘<br>리더십 워크숍</p>
+      <p class="pin-sub">참석자 전용 페이지입니다</p>
+      <div class="pin-input-wrap">
+        <input class="pin-input" id="pin-input" type="password"
+               maxlength="6" inputmode="numeric" pattern="[0-9]*"
+               placeholder="· · · · · ·" autocomplete="off"
+               aria-label="PIN 번호 입력" />
+        <p class="pin-error" id="pin-error" aria-live="polite"></p>
+      </div>
+      <button class="pin-btn" id="pin-submit">입장하기</button>
+    </div>
+  </div>
+
   <div id="notice-bar" role="status"></div>
 
   <!-- ══ 사이드바 (데스크탑) ══════════════════════════════════ -->
   <aside class="sidebar" aria-label="내비게이션">
-
-    <!-- 로고: images/logo.png 넣으면 자동 표시, 없으면 텍스트 -->
     <a class="sidebar-logo" href="#top" aria-label="홈">
       <img src="images/logo.png" alt="에프앤엘" class="sidebar-logo-img"
            onerror="this.hidden=true;this.nextElementSibling.hidden=false">
       <span class="sidebar-logo-text" hidden>에프앤엘</span>
     </a>
-
-    <!-- Day 탭 (JS가 렌더링) -->
-    <nav class="sidebar-nav" id="sidebar-tabs" role="tablist" aria-label="날짜 선택"></nav>
-
+    <nav class="sidebar-nav" id="sidebar-tabs" role="tablist" aria-label="메뉴"></nav>
     <hr class="sidebar-hr" />
-
-    <!-- 검색 -->
     <button class="sidebar-search-btn" id="search-open-btn" aria-label="검색 열기">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -34,21 +48,20 @@
       </svg>
       검색
     </button>
-
   </aside>
 
   <!-- ══ 하단 탭바 (모바일) ═══════════════════════════════════ -->
-  <nav class="mobile-tabs" id="mobile-tabs" aria-label="날짜 선택"></nav>
+  <nav class="mobile-tabs" id="mobile-tabs" aria-label="메뉴"></nav>
 
   <!-- ══ 검색 오버레이 ════════════════════════════════════════ -->
-  <div class="search-overlay" id="search-overlay" role="search" aria-label="일정 검색">
+  <div class="search-overlay" id="search-overlay" role="search" aria-label="검색">
     <div class="search-top-bar">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
       </svg>
       <input class="search-input" id="search-input" type="search"
-             placeholder="검색 (예: 점심, 흡연, 포유포레, 이동)"
+             placeholder="검색 (예: 점심, 이름, 흡연, 포유포레)"
              autocomplete="off" aria-label="검색어 입력" />
       <button class="search-close-btn" id="search-close-btn" aria-label="검색 닫기">✕</button>
     </div>
@@ -60,52 +73,44 @@
 
     <section id="hero">
       <div class="hero-inner">
-
-        <!-- 모바일 전용 로고 -->
         <div class="hero-logo-mobile" aria-hidden="true">
           <img src="images/logo.png" alt="" class="hero-logo-mobile-img"
                onerror="this.hidden=true;this.nextElementSibling.hidden=false">
           <span class="hero-logo-mobile-text" hidden>에프앤엘</span>
         </div>
-
         <p class="hero-kicker">FNL Leadership Workshop</p>
         <h1 class="hero-title" id="hero-title"></h1>
         <p class="hero-subtitle" id="hero-subtitle"></p>
-
         <div class="hero-chips">
           <span class="chip" id="chip-date">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="3" y="4" width="18" height="18" rx="2"/>
-              <line x1="16" y1="2" x2="16" y2="6"/>
-              <line x1="8"  y1="2" x2="8"  y2="6"/>
-              <line x1="3"  y1="10" x2="21" y2="10"/>
+              <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
             </svg>
             <span></span>
           </span>
           <span class="chip" id="chip-time">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="10"/>
-              <polyline points="12 6 12 12 16 14"/>
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
             </svg>
             <span></span>
           </span>
           <a class="chip" id="chip-venue" href="#" target="_blank" rel="noopener">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/>
-              <circle cx="12" cy="10" r="3"/>
+              <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
             </svg>
             <span></span>
           </a>
         </div>
-
       </div>
     </section>
 
-    <!-- Day 패널 -->
-    <div class="day-panels-wrap" id="day-panels"></div>
+    <!-- 패널 래퍼 -->
+    <div class="panels-wrap" id="panels"></div>
 
   </main>
 
@@ -125,11 +130,43 @@
     const escAttr = s => String(s).replace(/[^a-zA-Z0-9_./:?=%&+#-]/g,
       c => `&#${c.charCodeAt(0)};`);
 
-    const PIN_SVG = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-      stroke-linejoin="round" aria-hidden="true">
-      <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/>
-      <circle cx="12" cy="10" r="3"/></svg>`;
+    /* ── PIN 게이트 ──────────────────────────────────────── */
+    (function initPin() {
+      const gate    = $('pin-gate');
+      const input   = $('pin-input');
+      const errorEl = $('pin-error');
+      const correct = (EVENT.pin || '000000');
+
+      if (sessionStorage.getItem('pin_ok') === '1') {
+        gate.remove();
+        return;
+      }
+
+      function attemptPin() {
+        if (input.value === correct) {
+          sessionStorage.setItem('pin_ok', '1');
+          gate.classList.add('pin-gate--exit');
+          setTimeout(() => gate.remove(), 380);
+        } else {
+          errorEl.textContent = '올바르지 않은 PIN 번호입니다.';
+          input.value = '';
+          input.classList.remove('shake');
+          void input.offsetWidth; // reflow to restart animation
+          input.classList.add('shake');
+          setTimeout(() => input.classList.remove('shake'), 420);
+          input.focus();
+        }
+      }
+
+      $('pin-submit').addEventListener('click', attemptPin);
+      input.addEventListener('keydown', e => { if (e.key === 'Enter') attemptPin(); });
+      // Auto-submit when 6 digits entered
+      input.addEventListener('input', () => {
+        errorEl.textContent = '';
+        if (input.value.length === 6) attemptPin();
+      });
+      requestAnimationFrame(() => input.focus());
+    })();
 
     /* ── 기본 정보 채우기 ─────────────────────────────────── */
     document.title = EVENT.title;
@@ -137,8 +174,8 @@
 
     $('hero-title').textContent    = EVENT.title;
     $('hero-subtitle').textContent = EVENT.subtitle;
-    $('chip-date').querySelector('span').textContent  = EVENT.date;
-    $('chip-time').querySelector('span').textContent  = EVENT.time;
+    $('chip-date').querySelector('span').textContent = EVENT.date;
+    $('chip-time').querySelector('span').textContent = EVENT.time;
     const vc = $('chip-venue');
     vc.querySelector('span').textContent = EVENT.venue;
     vc.href = 'https://map.naver.com/v5/search/' + encodeURIComponent(EVENT.address);
@@ -146,7 +183,126 @@
     $('footer-title').textContent = EVENT.title;
     $('footer-info').textContent  = EVENT.date + '  ·  ' + EVENT.venue;
 
-    /* ── 타임라인 빌더 ───────────────────────────────────── */
+    /* ── 탭 정의 ─────────────────────────────────────────── */
+    const TABS = [
+      { id:'day-0',         label:'Day 1',  sub: EVENT.days[0].date, icon:'calendar' },
+      { id:'day-1',         label:'Day 2',  sub: EVENT.days[1].date, icon:'calendar' },
+      { id:'attendees',     label:'참석자', sub:'참석자 정보',        icon:'users'    },
+      { id:'accommodation', label:'숙소',   sub:'포유포레',           icon:'building' },
+    ];
+
+    function tabIcon(icon, size) {
+      const s = size || 15;
+      if (icon === 'calendar') return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="4" width="18" height="18" rx="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>`;
+      if (icon === 'users') return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>`;
+      if (icon === 'building') return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="2"/>
+        <path d="M9 9h1M14 9h1M9 14h1M14 14h1"/>
+        <path d="M9 19v-5h6v5"/>
+      </svg>`;
+      return '';
+    }
+
+    /* ── 사이드바 & 모바일 탭 렌더링 ────────────────────── */
+    let activeTab = 'day-0';
+    const sidebarNav = $('sidebar-tabs');
+    const mobileNav  = $('mobile-tabs');
+    const panelWrap  = $('panels');
+
+    TABS.forEach(tab => {
+      // 사이드바 버튼
+      const sbBtn = document.createElement('button');
+      sbBtn.className = 'sidebar-day-tab' + (tab.id === activeTab ? ' is-active' : '');
+      sbBtn.id = `sb-tab-${tab.id}`;
+      sbBtn.setAttribute('role', 'tab');
+      sbBtn.setAttribute('aria-selected', tab.id === activeTab ? 'true' : 'false');
+      sbBtn.setAttribute('aria-controls', `panel-${tab.id}`);
+      sbBtn.innerHTML = `<span class="sidebar-tab-label">${escHtml(tab.label)}</span>
+                         <span class="sidebar-tab-date">${escHtml(tab.sub)}</span>`;
+      sbBtn.addEventListener('click', () => switchTab(tab.id));
+      sidebarNav.appendChild(sbBtn);
+
+      // 모바일 버튼
+      const mbBtn = document.createElement('button');
+      mbBtn.className = 'mobile-tab' + (tab.id === activeTab ? ' is-active' : '');
+      mbBtn.id = `mb-tab-${tab.id}`;
+      mbBtn.setAttribute('aria-label', `${tab.label} ${tab.sub}`);
+      mbBtn.innerHTML = `
+        <span class="mobile-tab-icon">${tabIcon(tab.icon, 14)}</span>
+        <span class="mobile-tab-label">${escHtml(tab.label)}</span>
+        <span class="mobile-tab-date">${escHtml(tab.sub)}</span>`;
+      mbBtn.addEventListener('click', () => switchTab(tab.id));
+      mobileNav.appendChild(mbBtn);
+    });
+
+    // 모바일 검색 탭
+    const mbSearch = document.createElement('button');
+    mbSearch.className = 'mobile-tab';
+    mbSearch.setAttribute('aria-label', '검색');
+    mbSearch.innerHTML = `
+      <span class="mobile-tab-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </span>
+      <span class="mobile-tab-label">검색</span>`;
+    mbSearch.addEventListener('click', openSearch);
+    mobileNav.appendChild(mbSearch);
+
+    /* ── 탭 전환 ─────────────────────────────────────────── */
+    function switchTab(tabId) {
+      closeSearch();
+      if (tabId === activeTab) return;
+      activeTab = tabId;
+
+      document.querySelectorAll('.sidebar-day-tab').forEach(b => {
+        const tid = b.id.replace('sb-tab-', '');
+        b.classList.toggle('is-active', tid === tabId);
+        b.setAttribute('aria-selected', tid === tabId ? 'true' : 'false');
+      });
+      document.querySelectorAll('[id^="mb-tab-"]').forEach(b => {
+        const tid = b.id.replace('mb-tab-', '');
+        b.classList.toggle('is-active', tid === tabId);
+      });
+      document.querySelectorAll('.main-panel').forEach(p => {
+        const pid = p.id.replace('panel-', '');
+        const wasActive = p.classList.contains('is-active');
+        const nowActive = pid === tabId;
+        p.classList.toggle('is-active', nowActive);
+        if (nowActive && !wasActive) {
+          p.style.animation = 'none';
+          requestAnimationFrame(() => { p.style.animation = ''; });
+        }
+      });
+
+      if (window.innerWidth < 768) window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 이전 버전 호환 (검색 결과 클릭 시 사용)
+    function switchDay(idx) { switchTab(`day-${idx}`); }
+
+    /* ════════════════════════════════════════════════════════
+       패널 1·2 — Day 타임라인
+       ════════════════════════════════════════════════════════ */
+    const PIN_SVG = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+      stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/>
+      <circle cx="12" cy="10" r="3"/></svg>`;
+
     const TYPE_CLS = {
       keynote:'is-keynote', activity:'is-activity',
       networking:'is-networking', break:'is-break', move:'is-move',
@@ -179,52 +335,14 @@
       return ol;
     }
 
-    /* ── Day 탭 & 패널 렌더링 ────────────────────────────── */
-    let activeDay = 0;
-    const sidebarNav = $('sidebar-tabs');
-    const mobileNav  = $('mobile-tabs');
-    const panelWrap  = $('day-panels');
-
     EVENT.days.forEach((day, i) => {
-
-      /* 사이드바 탭 */
-      const sbBtn = document.createElement('button');
-      sbBtn.className = 'sidebar-day-tab' + (i === 0 ? ' is-active' : '');
-      sbBtn.setAttribute('role', 'tab');
-      sbBtn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
-      sbBtn.setAttribute('aria-controls', `panel-${i}`);
-      sbBtn.id = `sb-tab-${i}`;
-      sbBtn.innerHTML = `<span class="sidebar-tab-label">${escHtml(day.label)}</span>
-                         <span class="sidebar-tab-date">${escHtml(day.date)}</span>`;
-      sbBtn.addEventListener('click', () => switchDay(i));
-      sidebarNav.appendChild(sbBtn);
-
-      /* 모바일 탭 */
-      const mbBtn = document.createElement('button');
-      mbBtn.className = 'mobile-tab' + (i === 0 ? ' is-active' : '');
-      mbBtn.id = `mb-tab-${i}`;
-      mbBtn.setAttribute('aria-label', `${day.label} ${day.date}`);
-      mbBtn.innerHTML = `
-        <svg class="mobile-tab-icon" width="16" height="16" viewBox="0 0 24 24"
-             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-             stroke-linejoin="round" aria-hidden="true">
-          <rect x="3" y="4" width="18" height="18" rx="2"/>
-          <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
-          <line x1="3" y1="10" x2="21" y2="10"/>
-        </svg>
-        <span class="mobile-tab-label">${escHtml(day.label)}</span>
-        <span class="mobile-tab-date">${escHtml(day.date)}</span>`;
-      mbBtn.addEventListener('click', () => switchDay(i));
-      mobileNav.appendChild(mbBtn);
-
-      /* 패널 */
       const panel = document.createElement('div');
-      panel.className = 'day-panel' + (i === 0 ? ' is-active' : '');
-      panel.id = `panel-${i}`;
+      panel.className = 'main-panel' + (i === 0 ? ' is-active' : '');
+      panel.id = `panel-day-${i}`;
       panel.setAttribute('role', 'tabpanel');
-      panel.setAttribute('aria-labelledby', `sb-tab-${i}`);
+      panel.setAttribute('aria-labelledby', `sb-tab-day-${i}`);
       const inner = document.createElement('div');
-      inner.className = 'day-panel-inner';
+      inner.className = 'panel-inner';
       inner.innerHTML = `<div class="day-heading">
         <span class="day-heading-label">${escHtml(day.label)}</span>
         <span class="day-heading-date">${escHtml(day.date)}</span>
@@ -234,52 +352,292 @@
       panelWrap.appendChild(panel);
     });
 
-    /* 모바일 검색 탭 */
-    const mbSearch = document.createElement('button');
-    mbSearch.className = 'mobile-tab';
-    mbSearch.setAttribute('aria-label', '검색');
-    mbSearch.innerHTML = `
-      <svg class="mobile-tab-icon" width="16" height="16" viewBox="0 0 24 24"
-           fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
-           stroke-linejoin="round" aria-hidden="true">
-        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-      </svg>
-      <span class="mobile-tab-label">검색</span>`;
-    mbSearch.addEventListener('click', openSearch);
-    mobileNav.appendChild(mbSearch);
-
-    /* ── Day 전환 ────────────────────────────────────────── */
-    function switchDay(idx) {
-      closeSearch();
-      if (idx === activeDay) return;
-      activeDay = idx;
-      document.querySelectorAll('.sidebar-day-tab').forEach((b, i) => {
-        b.classList.toggle('is-active', i === idx);
-        b.setAttribute('aria-selected', i === idx ? 'true' : 'false');
-      });
-      document.querySelectorAll('[id^="mb-tab-"]').forEach((b, i) => {
-        b.classList.toggle('is-active', i === idx);
-      });
-      document.querySelectorAll('.day-panel').forEach((p, i) => {
-        const wasActive = p.classList.contains('is-active');
-        p.classList.toggle('is-active', i === idx);
-        if (i === idx && !wasActive) {
-          p.style.animation = 'none';
-          requestAnimationFrame(() => { p.style.animation = ''; });
-        }
-      });
-      // 모바일: 패널 상단으로 스크롤
-      if (window.innerWidth < 768) {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
+    /* ════════════════════════════════════════════════════════
+       패널 3 — 참석자
+       ════════════════════════════════════════════════════════ */
+    function avatarColor(title) {
+      if (title === 'CEO')                                      return '#C5A55A';
+      if (title === 'Group Leader' || title === 'Center Leader') return '#3A7BD5';
+      if (title === 'Team Leader')                              return '#4A6FA5';
+      if (title === 'Part Leader')                              return '#2E8B5A';
+      return '#8A9BAD';
+    }
+    function badgeClass(title) {
+      if (title === 'CEO')            return 'badge-ceo';
+      if (title === 'Group Leader')   return 'badge-group';
+      if (title === 'Center Leader')  return 'badge-center';
+      if (title === 'Team Leader')    return 'badge-team';
+      if (title === 'Part Leader')    return 'badge-part';
+      return 'badge-staff';
     }
 
-    /* ── 검색 ────────────────────────────────────────────── */
-    const overlay   = $('search-overlay');
-    const input     = $('search-input');
-    const results   = $('search-results');
-    const openBtn   = $('search-open-btn');
-    const closeBtn  = $('search-close-btn');
+    (function buildAttendeePanel() {
+      const panel = document.createElement('div');
+      panel.className = 'main-panel';
+      panel.id = 'panel-attendees';
+      panel.setAttribute('role', 'tabpanel');
+
+      const inner = document.createElement('div');
+      inner.className = 'panel-inner';
+
+      const headHtml = `<div class="panel-heading">
+        <span class="panel-heading-label">참석자</span>
+        <span class="panel-heading-sub">${escHtml(String(EVENT.attendees.length))}명</span>
+      </div>`;
+
+      const grid = document.createElement('div');
+      grid.className = 'attendee-grid';
+
+      EVENT.attendees.forEach(a => {
+        const card = document.createElement('div');
+        card.className = 'attendee-card';
+
+        const givenName = a.name.length >= 3 ? a.name.slice(1) : a.name;
+        const teamLine = a.team && a.team !== '-'
+          ? `${escHtml(a.division)}<br>${escHtml(a.team)}`
+          : `${escHtml(a.division)}`;
+
+        card.innerHTML = `
+          <div class="attendee-avatar" style="--avatar-color:${avatarColor(a.title)}">${escHtml(givenName)}</div>
+          <div class="attendee-info">
+            <span class="attendee-name">${escHtml(a.name)}</span>
+            <span class="attendee-badge ${badgeClass(a.title)}">${escHtml(a.title)}</span>
+            <span class="attendee-meta">${teamLine}</span>
+          </div>`;
+        grid.appendChild(card);
+      });
+
+      inner.innerHTML = headHtml;
+      inner.appendChild(grid);
+      panel.appendChild(inner);
+      panelWrap.appendChild(panel);
+    })();
+
+    /* ════════════════════════════════════════════════════════
+       패널 4 — 숙소 (포유포레)
+       ════════════════════════════════════════════════════════ */
+    const ACC_SUBTABS = [
+      { id:'facilities', label:'시설안내'  },
+      { id:'wifi',       label:'와이파이'  },
+      { id:'rooms',      label:'방배정'    },
+      { id:'breakfast',  label:'Day 2 조식'},
+      { id:'cafes',      label:'근처 카페' },
+    ];
+    let activeAccTab = 'facilities';
+
+    function switchAccTab(id) {
+      activeAccTab = id;
+      document.querySelectorAll('.acc-subtab').forEach(b => {
+        b.classList.toggle('is-active', b.dataset.tab === id);
+      });
+      document.querySelectorAll('.acc-subpanel').forEach(p => {
+        p.classList.toggle('is-active', p.dataset.panel === id);
+      });
+    }
+
+    (function buildAccPanel() {
+      const acc   = EVENT.accommodation;
+      const panel = document.createElement('div');
+      panel.className = 'main-panel';
+      panel.id = 'panel-accommodation';
+      panel.setAttribute('role', 'tabpanel');
+
+      const inner = document.createElement('div');
+      inner.className = 'panel-inner';
+
+      // 헤딩
+      inner.innerHTML = `<div class="panel-heading">
+        <span class="panel-heading-label">${escHtml(acc.name)}</span>
+        <a class="panel-heading-sub" href="${escAttr(acc.locationUrl)}"
+           target="_blank" rel="noopener" style="text-decoration:none;">
+          지도 →</a>
+      </div>`;
+
+      // 서브탭 바
+      const tabBar = document.createElement('div');
+      tabBar.className = 'acc-subtabs-bar';
+      ACC_SUBTABS.forEach(st => {
+        const btn = document.createElement('button');
+        btn.className = 'acc-subtab' + (st.id === activeAccTab ? ' is-active' : '');
+        btn.dataset.tab = st.id;
+        btn.textContent = st.label;
+        btn.addEventListener('click', () => switchAccTab(st.id));
+        tabBar.appendChild(btn);
+      });
+      inner.appendChild(tabBar);
+
+      // ─ 서브패널: 시설안내 ─
+      const facPanel = document.createElement('div');
+      facPanel.className = 'acc-subpanel is-active';
+      facPanel.dataset.panel = 'facilities';
+
+      const floorBlocks = document.createElement('div');
+      floorBlocks.className = 'floor-blocks';
+      acc.floors.forEach(floor => {
+        const block = document.createElement('div');
+        block.className = 'floor-block';
+        let html = `<div class="floor-label">${escHtml(floor.label)}</div>`;
+        if (floor.note) html += `<p class="floor-note">${escHtml(floor.note)}</p>`;
+        html += `<div class="space-list">`;
+        floor.spaces.forEach(sp => {
+          html += `<div class="space-item">
+            <span class="space-name">${escHtml(sp.name)}</span>
+            ${sp.desc ? `<span class="space-desc">${escHtml(sp.desc)}</span>` : ''}
+          </div>`;
+        });
+        html += `</div>`;
+        block.innerHTML = html;
+        floorBlocks.appendChild(block);
+      });
+      facPanel.appendChild(floorBlocks);
+
+      // 흡연구역
+      if (acc.smokingAreas && acc.smokingAreas.length) {
+        const notice = document.createElement('div');
+        notice.className = 'smoking-notice';
+        let areasHtml = acc.smokingAreas.map(a => `<p class="smoking-area">${escHtml(a)}</p>`).join('');
+        notice.innerHTML = `
+          <span class="smoking-icon">🚬</span>
+          <div class="smoking-text">
+            <p class="smoking-title">흡연구역 (2곳)</p>
+            <div class="smoking-areas">${areasHtml}</div>
+          </div>`;
+        facPanel.appendChild(notice);
+      }
+      inner.appendChild(facPanel);
+
+      // ─ 서브패널: 와이파이 ─
+      const wifiPanel = document.createElement('div');
+      wifiPanel.className = 'acc-subpanel';
+      wifiPanel.dataset.panel = 'wifi';
+
+      if (acc.wifi && acc.wifi.length) {
+        acc.wifi.forEach(w => {
+          const card = document.createElement('div');
+          card.className = 'wifi-card';
+
+          function copyRow(label, value) {
+            const btnId = `copy-${label.replace(/\s/g,'')}`;
+            return `<div class="wifi-row">
+              <span class="wifi-label">${escHtml(label)}</span>
+              <span class="wifi-value" id="v-${btnId}">
+                <span>${escHtml(value)}</span>
+                <button class="wifi-copy-btn" id="${escAttr(btnId)}"
+                  onclick="(function(btn,val){
+                    navigator.clipboard.writeText(val).then(()=>{
+                      btn.textContent='복사됨!';
+                      setTimeout(()=>btn.textContent='복사',2000);
+                    }).catch(()=>{});
+                  })(this,'${escAttr(value)}')" aria-label="${escHtml(label)} 복사">복사</button>
+              </span>
+            </div>`;
+          }
+
+          card.innerHTML =
+            copyRow('네트워크 이름 (SSID)', w.ssid) +
+            copyRow('비밀번호', w.password) +
+            (w.note ? `<p class="wifi-note">${escHtml(w.note)}</p>` : '');
+          wifiPanel.appendChild(card);
+        });
+      } else {
+        wifiPanel.innerHTML = `<div class="placeholder-card">
+          <span class="placeholder-emoji">📶</span>
+          <p class="placeholder-title">와이파이 정보 준비 중</p>
+          <p class="placeholder-desc">현장 도착 후 안내드립니다.</p>
+        </div>`;
+      }
+      inner.appendChild(wifiPanel);
+
+      // ─ 서브패널: 방배정 ─
+      const roomsPanel = document.createElement('div');
+      roomsPanel.className = 'acc-subpanel';
+      roomsPanel.dataset.panel = 'rooms';
+
+      if (acc.rooms && acc.rooms.length) {
+        const grid = document.createElement('div');
+        grid.className = 'room-grid';
+        acc.rooms.forEach(r => {
+          const card = document.createElement('div');
+          card.className = 'room-card';
+          const occupantsHtml = r.occupants.map(o => `<span class="room-person">${escHtml(o)}</span>`).join('');
+          card.innerHTML = `<p class="room-name">${escHtml(r.room)}</p>
+            <div class="room-occupants">${occupantsHtml}</div>`;
+          grid.appendChild(card);
+        });
+        roomsPanel.appendChild(grid);
+      } else {
+        roomsPanel.innerHTML = `<div class="placeholder-card">
+          <span class="placeholder-emoji">🛏</span>
+          <p class="placeholder-title">방배정 안내 예정</p>
+          <p class="placeholder-desc">워크숍 전 확정 후 업데이트됩니다.</p>
+        </div>`;
+      }
+      inner.appendChild(roomsPanel);
+
+      // ─ 서브패널: Day 2 조식 ─
+      const breakfastPanel = document.createElement('div');
+      breakfastPanel.className = 'acc-subpanel';
+      breakfastPanel.dataset.panel = 'breakfast';
+      const bf = acc.breakfast || {};
+
+      if (bf.time || bf.location || bf.menu || bf.note) {
+        const card = document.createElement('div');
+        card.className = 'breakfast-card';
+        let rows = '';
+        if (bf.time)     rows += `<div class="breakfast-row"><span class="breakfast-key">시간</span><span class="breakfast-val">${escHtml(bf.time)}</span></div>`;
+        if (bf.location) rows += `<div class="breakfast-row"><span class="breakfast-key">장소</span><span class="breakfast-val">${escHtml(bf.location)}</span></div>`;
+        if (bf.menu)     rows += `<div class="breakfast-row"><span class="breakfast-key">메뉴</span><span class="breakfast-val">${escHtml(bf.menu)}</span></div>`;
+        if (bf.note)     rows += `<div class="breakfast-row"><span class="breakfast-key">안내</span><span class="breakfast-val">${escHtml(bf.note)}</span></div>`;
+        card.innerHTML = rows;
+        breakfastPanel.appendChild(card);
+      } else {
+        breakfastPanel.innerHTML = `<div class="placeholder-card">
+          <span class="placeholder-emoji">☕</span>
+          <p class="placeholder-title">조식 정보 준비 중</p>
+          <p class="placeholder-desc">Day 2 아침식사 안내가 업데이트됩니다.</p>
+        </div>`;
+      }
+      inner.appendChild(breakfastPanel);
+
+      // ─ 서브패널: 근처 카페 ─
+      const cafesPanel = document.createElement('div');
+      cafesPanel.className = 'acc-subpanel';
+      cafesPanel.dataset.panel = 'cafes';
+
+      if (acc.cafes && acc.cafes.length) {
+        const list = document.createElement('div');
+        list.className = 'floor-blocks'; // reuse the card-list style
+        acc.cafes.forEach(c => {
+          const item = document.createElement('div');
+          item.className = 'space-item';
+          item.innerHTML = `<span class="space-name">${escHtml(c.name)}</span>
+            ${c.address ? `<span class="space-desc">${escHtml(c.address)}</span>` : ''}
+            ${c.hours   ? `<span class="space-desc">영업시간: ${escHtml(c.hours)}</span>` : ''}
+            ${c.note    ? `<span class="space-desc">${escHtml(c.note)}</span>` : ''}`;
+          list.appendChild(item);
+        });
+        cafesPanel.appendChild(list);
+      } else {
+        cafesPanel.innerHTML = `<div class="placeholder-card">
+          <span class="placeholder-emoji">☕</span>
+          <p class="placeholder-title">근처 카페 정보 준비 중</p>
+          <p class="placeholder-desc">주변 카페 정보가 업데이트됩니다.</p>
+        </div>`;
+      }
+      inner.appendChild(cafesPanel);
+
+      panel.appendChild(inner);
+      panelWrap.appendChild(panel);
+    })();
+
+    /* ════════════════════════════════════════════════════════
+       검색
+       ════════════════════════════════════════════════════════ */
+    const overlay  = $('search-overlay');
+    const input    = $('search-input');
+    const results  = $('search-results');
+    const openBtn  = $('search-open-btn');
+    const closeBtn = $('search-close-btn');
 
     function openSearch() {
       overlay.classList.add('is-open');
@@ -321,7 +679,11 @@
         (t.title + ' ' + t.desc).toLowerCase().includes(q)
       );
 
-      if (!schedHits.length && !tipHits.length) {
+      const attHits = (EVENT.attendees || []).filter(a =>
+        `${a.name} ${a.title} ${a.division} ${a.team}`.toLowerCase().includes(q)
+      );
+
+      if (!schedHits.length && !tipHits.length && !attHits.length) {
         results.innerHTML = `<div class="search-empty">
           "<strong>${escHtml(raw)}</strong>" 검색 결과가 없습니다.
         </div>`;
@@ -351,6 +713,30 @@
             </div>
             <span class="search-badge ${di === 0 ? 'day1' : 'day2'}">${escHtml(day.label)}</span>`;
           const go = () => { switchDay(di); closeSearch(); };
+          el.addEventListener('click', go);
+          el.addEventListener('keydown', ev => { if (ev.key === 'Enter') go(); });
+          wrap.appendChild(el);
+        });
+      }
+
+      if (attHits.length) {
+        const lbl = document.createElement('p');
+        lbl.className = 'search-section-label';
+        lbl.textContent = '참석자';
+        wrap.appendChild(lbl);
+        attHits.forEach(a => {
+          const el = document.createElement('div');
+          el.className = 'search-result-item';
+          el.setAttribute('role', 'button');
+          el.setAttribute('tabindex', '0');
+          const meta = a.team && a.team !== '-' ? `${a.division} · ${a.team}` : a.division;
+          el.innerHTML = `
+            <div class="search-result-meta">
+              <span class="search-result-title">${escHtml(a.name)}</span>
+              <span class="search-result-desc">${escHtml(meta)}</span>
+            </div>
+            <span class="search-badge attendee">${escHtml(a.title)}</span>`;
+          const go = () => { switchTab('attendees'); closeSearch(); };
           el.addEventListener('click', go);
           el.addEventListener('keydown', ev => { if (ev.key === 'Enter') go(); });
           wrap.appendChild(el);
