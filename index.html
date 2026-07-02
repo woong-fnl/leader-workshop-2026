@@ -4,371 +4,358 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0D1B2A" />
-  <title id="page-title">리더 워크숍 2026</title>
-  <meta name="description" id="page-desc" content="리더 워크숍 2026 안내 페이지" />
+  <title>2026 에프앤엘 리더십 워크숍</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- 공지사항 띠 (data.js의 notice가 있을 때만 표시) -->
-  <div id="notice-bar" role="status" aria-live="polite"></div>
+  <!-- 공지 띠 -->
+  <div id="notice-bar" role="status"></div>
 
-  <!-- 스킵 내비게이션 (접근성) -->
-  <a class="sr-only" href="#main">본문 바로가기</a>
-
-  <!-- 상단 네비게이션 -->
+  <!-- 헤더 -->
   <header>
-    <nav aria-label="주요 메뉴">
-      <span class="nav-brand" id="nav-brand">리더 워크숍</span>
-      <ul class="nav-links" role="list">
-        <li><a href="#schedule">일정</a></li>
-        <li><a href="#gallery">갤러리</a></li>
-        <li><a href="#videos">영상</a></li>
-        <li><a href="#contact">문의</a></li>
-      </ul>
-    </nav>
+    <div class="nav-inner">
+
+      <!-- 로고: images/logo.png 가 있으면 이미지, 없으면 텍스트 표시 -->
+      <a class="nav-logo" href="#top" aria-label="홈으로">
+        <img src="images/logo.png" alt="에프앤엘" class="logo-img"
+             onerror="this.hidden=true;this.nextElementSibling.hidden=false">
+        <span class="logo-fallback" hidden>에프앤엘</span>
+      </a>
+
+      <!-- Day 탭 -->
+      <div class="day-switcher" role="tablist" id="day-tabs" aria-label="날짜 선택"></div>
+
+      <!-- 검색 버튼 -->
+      <button class="search-btn" id="search-open-btn" aria-label="검색 열기" aria-expanded="false">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <span class="search-btn-text">검색</span>
+      </button>
+
+    </div>
   </header>
 
-  <main id="main">
+  <!-- 검색 패널 (header 바로 아래 fixed) -->
+  <div class="search-panel" id="search-panel" role="search" aria-label="일정 검색">
+    <div class="search-input-row">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+           aria-hidden="true" style="flex-shrink:0;color:var(--text-muted)">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="search" class="search-input" id="search-input"
+             placeholder="검색 (예: 점심, 흡연, 포유포레, 이동)" autocomplete="off" />
+      <button class="search-close-btn" id="search-close-btn" aria-label="검색 닫기">✕</button>
+    </div>
+    <div class="search-results" id="search-results" aria-live="polite"></div>
+  </div>
 
-    <!-- ── 히어로 ─────────────────────────────────────────── -->
-    <section id="hero" aria-labelledby="hero-title">
-      <div class="container hero-inner">
-        <p class="hero-kicker">Leader Workshop</p>
-        <h1 id="hero-title"><!-- data.js title --></h1>
-        <p id="hero-subtitle"><!-- data.js subtitle --></p>
+  <main id="top">
 
-        <!-- 핵심 정보 chip 3개 -->
-        <div class="hero-chips" aria-label="행사 정보 요약">
-
+    <!-- 히어로 -->
+    <section id="hero">
+      <div class="hero-inner">
+        <p class="hero-kicker">FNL Leadership Workshop</p>
+        <h1 class="hero-title" id="hero-title"></h1>
+        <p class="hero-subtitle" id="hero-subtitle"></p>
+        <div class="hero-chips">
           <span class="chip" id="chip-date">
-            <!-- 달력 아이콘 -->
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="3" y="4" width="18" height="18" rx="2"/>
-              <line x1="16" y1="2" x2="16" y2="6"/>
-              <line x1="8"  y1="2" x2="8"  y2="6"/>
-              <line x1="3"  y1="10" x2="21" y2="10"/>
+              <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
             </svg>
-            <span><!-- data.js date --></span>
+            <span></span>
           </span>
-
           <span class="chip" id="chip-time">
-            <!-- 시계 아이콘 -->
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="10"/>
-              <polyline points="12 6 12 12 16 14"/>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
             </svg>
-            <span><!-- data.js time --></span>
+            <span></span>
           </span>
-
           <a class="chip" id="chip-venue" href="#" target="_blank" rel="noopener">
-            <!-- 위치 아이콘 -->
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/>
               <circle cx="12" cy="10" r="3"/>
             </svg>
-            <span><!-- data.js venue --></span>
+            <span></span>
           </a>
-
-        </div><!-- .hero-chips -->
-      </div>
-    </section>
-
-    <!-- ── 일정 타임라인 ───────────────────────────────────── -->
-    <section id="schedule" class="section" aria-labelledby="schedule-heading">
-      <div class="container">
-        <p class="section-label">Schedule</p>
-        <h2 class="section-title" id="schedule-heading">세부 일정</h2>
-
-        <!-- Day 탭 -->
-        <div class="tab-bar" role="tablist" aria-label="일정 탭" id="day-tabs"></div>
-
-        <!-- Day별 패널 -->
-        <div id="day-panels"></div>
-      </div>
-    </section>
-
-    <hr class="divider" />
-
-    <!-- ── 갤러리 ──────────────────────────────────────────── -->
-    <section id="gallery" class="section" aria-labelledby="gallery-heading">
-      <div class="container">
-        <p class="section-label">Gallery</p>
-        <h2 class="section-title" id="gallery-heading">사진 갤러리</h2>
-        <div class="gallery-grid" id="gallery-grid">
-          <!-- data.js gallery 배열로 동적 생성 -->
         </div>
       </div>
     </section>
 
-    <hr class="divider" />
-
-    <!-- ── 유튜브 영상 ─────────────────────────────────────── -->
-    <section id="videos" class="section" aria-labelledby="videos-heading">
-      <div class="container">
-        <p class="section-label">Videos</p>
-        <h2 class="section-title" id="videos-heading">영상</h2>
-        <div class="video-list" id="video-list">
-          <!-- data.js videos 배열로 동적 생성 -->
-        </div>
-      </div>
-    </section>
-
-    <hr class="divider" />
-
-    <!-- ── 문의처 ──────────────────────────────────────────── -->
-    <section id="contact" class="section" aria-labelledby="contact-heading">
-      <div class="container">
-        <p class="section-label">Contact</p>
-        <h2 class="section-title" id="contact-heading">문의처</h2>
-        <div class="contact-grid" id="contact-grid">
-          <!-- data.js contacts 배열로 동적 생성 -->
-        </div>
-      </div>
-    </section>
+    <!-- Day 패널 -->
+    <div class="day-panels-wrap" id="day-panels"></div>
 
   </main>
 
-  <!-- 푸터 -->
   <footer>
-    <p><strong id="footer-title">리더 워크숍 2026</strong></p>
-    <p id="footer-info"><!-- data.js date · venue --></p>
+    <p><strong id="footer-title"></strong></p>
+    <p id="footer-info"></p>
   </footer>
 
-  <!-- 스크린리더 전용 유틸 -->
-  <style>.sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }</style>
-
-  <!-- 데이터 로드 후 렌더링 -->
   <script src="data.js"></script>
   <script>
-    (() => {
-      const e = id => document.getElementById(id);
+  (() => {
+    // ── XSS 방지 헬퍼 ─────────────────────────────────────────
+    const escHtml = s => String(s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    const escAttr = s => String(s).replace(/[^a-zA-Z0-9_\-.:\/\?=%&+#]/g,
+      c => `&#${c.charCodeAt(0)};`);
 
-      // ── 페이지 메타 ────────────────────────────────────────
-      document.title = EVENT.title;
-      e('page-title').textContent = EVENT.title;
-      e('page-desc').setAttribute('content', `${EVENT.title} — ${EVENT.date} ${EVENT.venue}`);
+    // ── 메타 ─────────────────────────────────────────────────
+    document.title = EVENT.title;
+    const e = id => document.getElementById(id);
 
-      // ── 공지사항 ────────────────────────────────────────────
-      if (EVENT.notice) {
-        e('notice-bar').textContent = `📌 ${EVENT.notice}`;
-      }
+    if (EVENT.notice) e('notice-bar').textContent = '📌 ' + EVENT.notice;
 
-      // ── 네비 브랜드 ─────────────────────────────────────────
-      e('nav-brand').textContent = EVENT.title;
+    // ── 히어로 ────────────────────────────────────────────────
+    e('hero-title').textContent = EVENT.title;
+    e('hero-subtitle').textContent = EVENT.subtitle;
+    e('chip-date').querySelector('span').textContent = EVENT.date;
+    e('chip-time').querySelector('span').textContent = EVENT.time;
+    const venueChip = e('chip-venue');
+    venueChip.querySelector('span').textContent = EVENT.venue;
+    venueChip.href = 'https://map.naver.com/v5/search/' + encodeURIComponent(EVENT.address);
 
-      // ── 히어로 ──────────────────────────────────────────────
-      e('hero-title').textContent = EVENT.title;
+    // ── 푸터 ─────────────────────────────────────────────────
+    e('footer-title').textContent = EVENT.title;
+    e('footer-info').textContent = EVENT.date + '  ·  ' + EVENT.venue;
 
-      const subtitle = e('hero-subtitle');
-      if (EVENT.subtitle) {
-        subtitle.textContent = EVENT.subtitle;
-      } else {
-        subtitle.remove();
-      }
+    // ── 타임라인 빌더 ─────────────────────────────────────────
+    const TYPE_CLS = {
+      keynote: 'is-keynote', activity: 'is-activity',
+      networking: 'is-networking', break: 'is-break', move: 'is-move',
+    };
+    const PIN_SVG = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+        stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/>
+        <circle cx="12" cy="10" r="3"/></svg>`;
 
-      e('chip-date').querySelector('span').textContent = EVENT.date;
-      e('chip-time').querySelector('span').textContent = EVENT.time;
-
-      const venueChip = e('chip-venue');
-      venueChip.querySelector('span').textContent = EVENT.venue;
-      venueChip.href = `https://map.kakao.com/link/search/${encodeURIComponent(EVENT.address)}`;
-
-      // ── 푸터 ────────────────────────────────────────────────
-      e('footer-title').textContent = EVENT.title;
-      e('footer-info').textContent = `${EVENT.date}  ·  ${EVENT.venue}`;
-
-      // ── 타임라인 (Day 탭) ────────────────────────────────────
-      const tabBar    = e('day-tabs');
-      const panelWrap = e('day-panels');
-
-      const TYPE_CLASS = {
-        keynote:    'is-keynote',
-        activity:   'is-activity',
-        networking: 'is-networking',
-        break:      'is-break',
-        move:       'is-move',
-        session:    '',
-      };
-
-      function buildTimeline(items) {
-        const ol = document.createElement('ol');
-        ol.className = 'timeline';
-        ol.setAttribute('aria-label', '시간대별 일정');
-
-        items.forEach(item => {
-          const li = document.createElement('li');
-          li.className = 'timeline-item ' + (TYPE_CLASS[item.type] || '');
-
-          const desc = item.desc
-            ? `<p class="tl-desc">${escHtml(item.desc)}</p>`
-            : '';
-
-          // 비고 + 장소 링크
-          const notePart = item.note
-            ? `<span class="tl-note">${escHtml(item.note)}</span>`
-            : '';
-          const locPart = (item.location && item.locationUrl)
-            ? `<a class="tl-location" href="${escAttr(item.locationUrl)}" target="_blank" rel="noopener noreferrer">
-                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                 ${escHtml(item.location)}
-               </a>`
-            : (item.location
-                ? `<span class="tl-note">${escHtml(item.location)}</span>`
-                : '');
-          const meta = (notePart || locPart)
-            ? `<div class="tl-meta">${notePart}${locPart}</div>`
-            : '';
-
-          li.innerHTML = `
-            <div class="tl-time" aria-hidden="true">${escHtml(item.time)}</div>
-            <div class="tl-body">
-              <p class="tl-title">
-                <span class="sr-only">${escHtml(item.time)} — </span>
-                ${escHtml(item.title)}
-              </p>
-              ${desc}${meta}
-            </div>`;
-          ol.appendChild(li);
-        });
-        return ol;
-      }
-
-      EVENT.days.forEach((day, i) => {
-        // 탭 버튼
-        const btn = document.createElement('button');
-        btn.className    = 'tab-btn';
-        btn.role         = 'tab';
-        btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
-        btn.setAttribute('aria-controls', `panel-${i}`);
-        btn.id           = `tab-${i}`;
-        btn.innerHTML    = `<span class="tab-btn-label">${escHtml(day.label)}</span>
-                            <span class="tab-btn-date">${escHtml(day.date)}</span>`;
-        btn.addEventListener('click', () => switchTab(i));
-        tabBar.appendChild(btn);
-
-        // 패널
-        const panel = document.createElement('div');
-        panel.className = 'tab-panel' + (i === 0 ? ' is-active' : '');
-        panel.id        = `panel-${i}`;
-        panel.setAttribute('role', 'tabpanel');
-        panel.setAttribute('aria-labelledby', `tab-${i}`);
-        panel.appendChild(buildTimeline(day.items));
-        panelWrap.appendChild(panel);
+    function buildTimeline(items) {
+      const ol = document.createElement('ol');
+      ol.className = 'timeline';
+      items.forEach(item => {
+        const li = document.createElement('li');
+        li.className = 'timeline-item ' + (TYPE_CLS[item.type] || '');
+        const desc = item.desc
+          ? `<p class="tl-desc">${escHtml(item.desc)}</p>` : '';
+        const notePart = item.note
+          ? `<span class="tl-note">${escHtml(item.note)}</span>` : '';
+        const locPart = item.location && item.locationUrl
+          ? `<a class="tl-location" href="${escAttr(item.locationUrl)}"
+               target="_blank" rel="noopener noreferrer">
+               ${PIN_SVG}${escHtml(item.location)}
+             </a>`
+          : item.location
+            ? `<span class="tl-note">${escHtml(item.location)}</span>` : '';
+        const meta = (notePart || locPart)
+          ? `<div class="tl-meta">${notePart}${locPart}</div>` : '';
+        li.innerHTML = `
+          <div class="tl-time" aria-hidden="true">${escHtml(item.time)}</div>
+          <div class="tl-body">
+            <p class="tl-title">
+              <span class="sr-only">${escHtml(item.time)} — </span>${escHtml(item.title)}
+            </p>${desc}${meta}
+          </div>`;
+        ol.appendChild(li);
       });
+      return ol;
+    }
 
-      function switchTab(idx) {
-        tabBar.querySelectorAll('.tab-btn').forEach((b, i) => {
-          b.setAttribute('aria-selected', i === idx ? 'true' : 'false');
-        });
-        panelWrap.querySelectorAll('.tab-panel').forEach((p, i) => {
-          p.classList.toggle('is-active', i === idx);
-        });
-      }
+    // ── Day 탭 + 패널 렌더링 ──────────────────────────────────
+    const tabBar   = e('day-tabs');
+    const panelWrap = e('day-panels');
+    let activeDay  = 0;
 
-      // ── 갤러리 ──────────────────────────────────────────────
-      const grid = e('gallery-grid');
-      if (EVENT.gallery.length === 0) {
-        grid.closest('section').style.display = 'none';
-      } else {
-        EVENT.gallery.forEach(photo => {
-          const div = document.createElement('div');
-          div.className = 'gallery-item';
+    EVENT.days.forEach((day, i) => {
+      // 탭 버튼
+      const btn = document.createElement('button');
+      btn.className = 'day-tab';
+      btn.setAttribute('role', 'tab');
+      btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+      btn.setAttribute('aria-controls', `panel-${i}`);
+      btn.id = `tab-${i}`;
+      btn.innerHTML = `<span class="day-tab-label">${escHtml(day.label)}</span>
+                       <span class="day-tab-date">${escHtml(day.date)}</span>`;
+      btn.addEventListener('click', () => switchDay(i));
+      tabBar.appendChild(btn);
 
-          const img = document.createElement('img');
-          img.alt = photo.alt;
-          img.loading = 'lazy';
-          img.decoding = 'async';
+      // 패널
+      const panel = document.createElement('div');
+      panel.className = 'day-panel' + (i === 0 ? ' is-active' : '');
+      panel.id = `panel-${i}`;
+      panel.setAttribute('role', 'tabpanel');
+      panel.setAttribute('aria-labelledby', `tab-${i}`);
 
-          // 이미지 로드 실패 시 플레이스홀더 표시
-          img.onerror = () => {
-            div.innerHTML = `<div class="gallery-placeholder">사진 준비 중</div>`;
-          };
-          img.src = photo.src;
+      const inner = document.createElement('div');
+      inner.className = 'day-panel-inner';
 
-          div.appendChild(img);
+      const heading = document.createElement('div');
+      heading.className = 'day-heading';
+      heading.innerHTML = `<span class="day-heading-label">${escHtml(day.label)}</span>
+                           <span class="day-heading-date">${escHtml(day.date)}</span>`;
+      inner.appendChild(heading);
+      inner.appendChild(buildTimeline(day.items));
+      panel.appendChild(inner);
+      panelWrap.appendChild(panel);
+    });
 
-          if (photo.caption) {
-            const cap = document.createElement('p');
-            cap.className = 'gallery-caption';
-            cap.textContent = photo.caption;
-            div.appendChild(cap);
+    function switchDay(idx) {
+      if (idx === activeDay) return;
+      activeDay = idx;
+      tabBar.querySelectorAll('.day-tab').forEach((b, i) => {
+        b.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+      });
+      panelWrap.querySelectorAll('.day-panel').forEach((p, i) => {
+        const wasActive = p.classList.contains('is-active');
+        p.classList.toggle('is-active', i === idx);
+        // 재-애니메이션 트리거
+        if (i === idx && !wasActive) {
+          p.style.animation = 'none';
+          requestAnimationFrame(() => { p.style.animation = ''; });
+        }
+      });
+    }
+
+    // ── 검색 ─────────────────────────────────────────────────
+    const searchPanel    = e('search-panel');
+    const searchInput    = e('search-input');
+    const searchResults  = e('search-results');
+    const openBtn        = e('search-open-btn');
+    const closeBtn       = e('search-close-btn');
+
+    function openSearch() {
+      searchPanel.classList.add('is-open');
+      openBtn.setAttribute('aria-expanded', 'true');
+      searchInput.focus();
+    }
+
+    function closeSearch() {
+      searchPanel.classList.remove('is-open');
+      openBtn.setAttribute('aria-expanded', 'false');
+      searchInput.value = '';
+      searchResults.innerHTML = '';
+      openBtn.focus();
+    }
+
+    openBtn.addEventListener('click', openSearch);
+    closeBtn.addEventListener('click', closeSearch);
+    document.addEventListener('keydown', ev => {
+      if (ev.key === 'Escape' && searchPanel.classList.contains('is-open')) closeSearch();
+    });
+
+    // 검색 실행 (디바운스 80ms)
+    let debounceTimer;
+    searchInput.addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => renderSearchResults(searchInput.value), 80);
+    });
+
+    function normalizeQuery(q) {
+      return q.trim().toLowerCase();
+    }
+
+    function matchText(text, q) {
+      return text.toLowerCase().includes(q);
+    }
+
+    function renderSearchResults(rawQuery) {
+      const q = normalizeQuery(rawQuery);
+      if (!q) { searchResults.innerHTML = ''; return; }
+
+      const scheduleHits = [];
+      EVENT.days.forEach((day, dayIdx) => {
+        day.items.forEach(item => {
+          const haystack = [item.title, item.desc, item.note, item.location].join(' ');
+          if (matchText(haystack, q)) {
+            scheduleHits.push({ day, dayIdx, item });
           }
-
-          grid.appendChild(div);
         });
-      }
-
-      // ── 유튜브 영상 ─────────────────────────────────────────
-      const videoList = e('video-list');
-      const validVideos = EVENT.videos.filter(v => v.youtubeId && v.youtubeId.trim() !== '');
-      if (validVideos.length === 0) {
-        videoList.closest('section').style.display = 'none';
-      } else {
-        validVideos.forEach(video => {
-          const wrap = document.createElement('div');
-          wrap.className = 'video-item';
-
-          const titleEl = document.createElement('p');
-          titleEl.className = 'video-title';
-          titleEl.textContent = video.title;
-
-          const embedWrap = document.createElement('div');
-          embedWrap.className = 'video-embed-wrap';
-
-          const iframe = document.createElement('iframe');
-          iframe.src = `https://www.youtube.com/embed/${escAttr(video.youtubeId)}`;
-          iframe.title = video.title;
-          iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-          iframe.allowFullscreen = true;
-          iframe.loading = 'lazy';
-
-          embedWrap.appendChild(iframe);
-          wrap.appendChild(titleEl);
-          wrap.appendChild(embedWrap);
-          videoList.appendChild(wrap);
-        });
-      }
-
-      // ── 문의처 ──────────────────────────────────────────────
-      const contactGrid = e('contact-grid');
-      EVENT.contacts.forEach(c => {
-        const card = document.createElement('div');
-        card.className = 'contact-card';
-
-        const phoneHtml = c.phone
-          ? `<p class="contact-detail">
-               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12.1 19.36 19.36 0 0 1 1.64 3.5 2 2 0 0 1 3.62 1.5h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.1a16 16 0 0 0 6 6l.86-.86a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-               <a href="tel:${escAttr(c.phone.replace(/\D/g,''))}">${escHtml(c.phone)}</a>
-             </p>`
-          : '';
-
-        card.innerHTML = `
-          <p class="contact-name">${escHtml(c.name)}</p>
-          <p class="contact-role">${escHtml(c.role)}</p>
-          <p class="contact-detail">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            <a href="mailto:${escAttr(c.email)}">${escHtml(c.email)}</a>
-          </p>
-          ${phoneHtml}`;
-        contactGrid.appendChild(card);
       });
 
-      // ── XSS 방지 헬퍼 ───────────────────────────────────────
-      function escHtml(str) {
-        return String(str)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#39;');
-      }
-      function escAttr(str) {
-        return String(str).replace(/[^a-zA-Z0-9_\-\.]/g, c =>
-          `&#${c.charCodeAt(0)};`);
+      const tipHits = (EVENT.tips || []).filter(tip => {
+        const kwMatch = tip.keywords.some(k => k.toLowerCase().includes(q) || q.includes(k.toLowerCase()));
+        const textMatch = matchText(tip.title + ' ' + tip.desc, q);
+        return kwMatch || textMatch;
+      });
+
+      if (!scheduleHits.length && !tipHits.length) {
+        searchResults.innerHTML = `<div class="search-empty">
+          "<strong>${escHtml(rawQuery)}</strong>" 에 대한 결과가 없습니다.
+        </div>`;
+        return;
       }
 
-    })();
+      const wrap = document.createElement('div');
+      wrap.className = 'search-results-inner';
+
+      if (scheduleHits.length) {
+        const label = document.createElement('p');
+        label.className = 'search-section-label';
+        label.textContent = '일정';
+        wrap.appendChild(label);
+
+        scheduleHits.forEach(({ day, dayIdx, item }) => {
+          const a = document.createElement('div');
+          a.className = 'search-result-item';
+          a.setAttribute('role', 'button');
+          a.setAttribute('tabindex', '0');
+          const badgeCls = dayIdx === 0 ? 'day1' : 'day2';
+          const descText = item.desc ? item.desc.replace(/\n/g, ' ').slice(0, 60) + (item.desc.length > 60 ? '…' : '') : (item.note || '');
+          a.innerHTML = `
+            <div class="search-result-meta">
+              <span class="search-result-title">${escHtml(item.title)}</span>
+              ${descText ? `<span class="search-result-desc">${escHtml(descText)}</span>` : ''}
+              <span class="search-result-time">${escHtml(item.time)}</span>
+            </div>
+            <span class="search-badge ${badgeCls}">${escHtml(day.label)}</span>`;
+          // 클릭 시 해당 Day로 이동
+          const handler = () => {
+            switchDay(dayIdx);
+            closeSearch();
+            setTimeout(() => {
+              document.getElementById(`panel-${dayIdx}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 50);
+          };
+          a.addEventListener('click', handler);
+          a.addEventListener('keydown', ev => { if (ev.key === 'Enter') handler(); });
+          wrap.appendChild(a);
+        });
+      }
+
+      if (tipHits.length) {
+        const label = document.createElement('p');
+        label.className = 'search-section-label';
+        label.textContent = '안내';
+        wrap.appendChild(label);
+
+        tipHits.forEach(tip => {
+          const div = document.createElement('div');
+          div.className = 'search-result-item';
+          div.innerHTML = `
+            <div class="search-result-meta">
+              <span class="search-result-title">${escHtml(tip.title)}</span>
+              <span class="search-result-desc">${escHtml(tip.desc)}</span>
+            </div>
+            <span class="search-badge tip">안내</span>`;
+          wrap.appendChild(div);
+        });
+      }
+
+      searchResults.innerHTML = '';
+      searchResults.appendChild(wrap);
+    }
+
+  })();
   </script>
 
 </body>
