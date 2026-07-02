@@ -75,7 +75,6 @@ const EVENT = {
         spaces: [
           { name: "대형세미나실", desc: "실제 세션이 진행되는 장소입니다.",                                                      image: "seminar.png",    icon: "ti-presentation" },
           { name: "멀티룸",       desc: "대형스크린과 리클라이너소파가 있습니다. 편하게 쉬면서 이야기하는 공간으로 적당해요.", image: "multiroom.JPEG", icon: "ti-device-tv" },
-          { name: "사우나 & 스파",desc: "",                                                                                       image: "",               icon: "ti-ripple" },
           { name: "스크린골프",   desc: "",                                                                                       image: "screengolf.png", icon: "ti-golf" },
         ],
       },
@@ -97,25 +96,26 @@ const EVENT = {
       },
       {
         label: "4층",
-        note:  "",
+        note:  "🚫 남성 출입 금지 : 편안한 휴식을 위해 배려해주세요",
         spaces: [
           { name: "객실 401호 / 402호", desc: "", image: "room-4f.JPEG", icon: "ti-bed" },
         ],
       },
     ],
 
-    // 흡연구역
+    // 흡연구역 { spot, desc, image } — image: images/facilities/ 폴더에 넣어주세요
     smokingAreas: [
-      "2층 야외정원 건물 뒤편",
-      "외부현관을 들어가면 바로 있어요.",
+      { spot: "Spot 1", desc: "2층 야외정원 건물 뒤편",           image: "" },
+      { spot: "Spot 2", desc: "외부현관을 들어가면 바로 있어요.", image: "smoking-spot2.jpg" },
     ],
 
-    // Day 2 조식 안내 (입력 예정)
+    // Day 2 조식 안내
     breakfast: {
       time:     "08:00 – 09:00",
-      location: "",   // 예) "1층 레스토랑"
-      menu:     "",   // 예) "뷔페식"
-      note:     "",   // 추가 안내
+      location: "2층 공용주방",
+      menu:     "",
+      note:     "드신 후, 뒷정리도 부탁드려요 :)",
+      desc:     "2층 공용주방에서 자유롭게 식사해주세요.",
     },
 
     // 근처 카페 (입력 예정)
@@ -166,7 +166,7 @@ const EVENT = {
       locationUrl: 'https://map.naver.com/v5/search/%EC%83%9D%EA%B0%81%EA%B3%B5%EC%9E%A5%20%EB%8B%B9%EC%82%B0',
       date:        '2026년 7월 9일(목)',
       time:        '09:00',
-      note:        '버스 출발 시간에 맞춰 09:00까지 도착해 주세요.',
+      note:        '버스 출발 시간(09:30)에 맞춰 09:00까지 도착해 주세요.',
     },
     attire: '편한 캐주얼 복장 권장 (카트 · 야외 산책 등 액티비티 있음)',
     checklist: [

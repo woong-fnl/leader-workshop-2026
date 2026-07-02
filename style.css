@@ -617,6 +617,20 @@ a.chip:hover { background:rgba(255,255,255,.14); text-decoration:none; }
 .space-desc { font-size:.74rem; color:var(--text-muted); line-height:1.5; }
 
 /* 흡연구역 */
+.smoking-spots { display:flex; flex-direction:column; gap:.75rem; }
+.smoking-spot-card {
+  background:rgba(255,180,50,.08); border:1px solid rgba(255,180,50,.2);
+  border-radius:12px; overflow:hidden;
+}
+.smoking-spot-img { width:100%; height:160px; object-fit:cover; display:block; }
+.smoking-spot-body { display:flex; gap:.75rem; align-items:flex-start; padding:.85rem 1rem; }
+.smoking-spot-label {
+  font-size:.68rem; font-weight:800; letter-spacing:.06em;
+  color:#7A5020; background:rgba(255,180,50,.2); border-radius:4px;
+  padding:.15rem .5rem; white-space:nowrap; flex-shrink:0; margin-top:.1rem;
+}
+.smoking-spot-desc { font-size:.82rem; color:#7A5020; line-height:1.6; }
+
 .smoking-notice {
   display:flex; gap:.75rem; align-items:flex-start;
   background:rgba(255,180,50,.08);
@@ -665,6 +679,12 @@ a.chip:hover { background:rgba(255,255,255,.14); text-decoration:none; }
   border-radius:12px; padding:.8rem .9rem;
 }
 .room-name { font-size:.82rem; font-weight:800; color:var(--navy-deep); }
+.room-floor-section { margin-bottom:1rem; }
+.room-floor-label {
+  font-size:.68rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--text-muted); padding:.3rem 0 .5rem;
+  border-bottom:1px solid var(--border); margin-bottom:.6rem;
+}
 .room-header { display:flex; align-items:center; gap:.4rem; flex-wrap:wrap; margin-bottom:.25rem; }
 .room-note-badge {
   font-size:.62rem; font-weight:600; color:#7A5C1E;
@@ -683,6 +703,7 @@ a.chip:hover { background:rgba(255,255,255,.14); text-decoration:none; }
   border-radius:14px; padding:1.25rem;
   display:flex; flex-direction:column; gap:.75rem;
 }
+.breakfast-desc { font-size:.88rem; color:var(--navy-deep); line-height:1.6; margin:0 0 .25rem; }
 .breakfast-row { display:flex; gap:.75rem; }
 .breakfast-key { font-size:.74rem; font-weight:700; color:var(--text-muted); width:3rem; flex-shrink:0; padding-top:.15rem; }
 .breakfast-val { font-size:.85rem; color:var(--navy-deep); font-weight:600; line-height:1.5; }
@@ -717,8 +738,8 @@ footer strong { color:rgba(255,255,255,.6); }
   font-size:1.45rem; font-weight:800; color:var(--gold);
   line-height:1; font-variant-numeric:tabular-nums;
 }
-.acc-floor-hd-f { font-size:.85rem; font-weight:700; color:rgba(255,255,255,.38); }
-.acc-floor-hd-note { font-size:.68rem; color:rgba(255,255,255,.28); margin-left:.15rem; }
+.acc-floor-hd-f { font-size:.85rem; font-weight:700; color:rgba(255,255,255,.6); }
+.acc-floor-hd-note { font-size:.72rem; font-weight:500; color:rgba(255,255,255,.75); margin-left:.15rem; }
 .acc-floor-hd-count { margin-left:auto; font-size:.65rem; color:rgba(255,255,255,.2); }
 
 .acc-fac-rows { background:var(--surface); }

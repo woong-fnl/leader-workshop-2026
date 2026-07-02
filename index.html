@@ -957,16 +957,22 @@
       smokingPanel.dataset.panel = 'smoking';
 
       if (acc.smokingAreas && acc.smokingAreas.length) {
-        const notice = document.createElement('div');
-        notice.className = 'smoking-notice';
-        let areasHtml = acc.smokingAreas.map(a => `<p class="smoking-area">${escHtml(a)}</p>`).join('');
-        notice.innerHTML = `
-          <span class="smoking-icon">🚬</span>
-          <div class="smoking-text">
-            <p class="smoking-title">흡연구역 (${acc.smokingAreas.length}곳)</p>
-            <div class="smoking-areas">${areasHtml}</div>
-          </div>`;
-        smokingPanel.appendChild(notice);
+        const spots = document.createElement('div');
+        spots.className = 'smoking-spots';
+        acc.smokingAreas.forEach(s => {
+          const card = document.createElement('div');
+          card.className = 'smoking-spot-card';
+          if (s.image) {
+            card.innerHTML += `<img class="smoking-spot-img" src="images/facilities/${escAttr(s.image)}" alt="${escAttr(s.spot)}" loading="lazy">`;
+          }
+          const body = document.createElement('div');
+          body.className = 'smoking-spot-body';
+          body.innerHTML = `<span class="smoking-spot-label">🚬 ${escHtml(s.spot)}</span>
+            <p class="smoking-spot-desc">${escHtml(s.desc)}</p>`;
+          card.appendChild(body);
+          spots.appendChild(card);
+        });
+        smokingPanel.appendChild(spots);
       } else {
         smokingPanel.innerHTML = `<div class="placeholder-card">
           <span class="placeholder-emoji">🚬</span>
@@ -1024,22 +1030,38 @@
       roomsPanel.dataset.panel = 'rooms';
 
       if (acc.rooms && acc.rooms.length) {
-        const grid = document.createElement('div');
-        grid.className = 'room-grid';
+        // 층별 그룹핑 (201→2층, 301→3층, 401→4층)
+        const floorMap = {};
         acc.rooms.forEach(r => {
-          const card = document.createElement('div');
-          card.className = 'room-card';
-          const occupantsHtml = r.occupants.map(o => `<span class="room-person">${escHtml(o)}</span>`).join('');
-          card.innerHTML = `
-            <div class="room-header">
-              <p class="room-name">${escHtml(r.room)}</p>
-              ${r.note ? `<span class="room-note-badge">${escHtml(r.note)}</span>` : ''}
-            </div>
-            ${r.type ? `<p class="room-type">${escHtml(r.type)}</p>` : ''}
-            <div class="room-occupants">${occupantsHtml}</div>`;
-          grid.appendChild(card);
+          const floorKey = r.room.charAt(0) + '층';
+          if (!floorMap[floorKey]) floorMap[floorKey] = [];
+          floorMap[floorKey].push(r);
         });
-        roomsPanel.appendChild(grid);
+        Object.entries(floorMap).forEach(([floorLabel, rooms]) => {
+          const section = document.createElement('div');
+          section.className = 'room-floor-section';
+          const lbl = document.createElement('p');
+          lbl.className = 'room-floor-label';
+          lbl.textContent = floorLabel;
+          section.appendChild(lbl);
+          const grid = document.createElement('div');
+          grid.className = 'room-grid';
+          rooms.forEach(r => {
+            const card = document.createElement('div');
+            card.className = 'room-card';
+            const occupantsHtml = r.occupants.map(o => `<span class="room-person">${escHtml(o)}</span>`).join('');
+            card.innerHTML = `
+              <div class="room-header">
+                <p class="room-name">${escHtml(r.room)}</p>
+                ${r.note ? `<span class="room-note-badge">${escHtml(r.note)}</span>` : ''}
+              </div>
+              ${r.type ? `<p class="room-type">${escHtml(r.type)}</p>` : ''}
+              <div class="room-occupants">${occupantsHtml}</div>`;
+            grid.appendChild(card);
+          });
+          section.appendChild(grid);
+          roomsPanel.appendChild(section);
+        });
       } else {
         roomsPanel.innerHTML = `<div class="placeholder-card">
           <span class="placeholder-emoji">🛏</span>
@@ -1055,10 +1077,11 @@
       breakfastPanel.dataset.panel = 'breakfast';
       const bf = acc.breakfast || {};
 
-      if (bf.time || bf.location || bf.menu || bf.note) {
+      if (bf.desc || bf.time || bf.location || bf.menu || bf.note) {
         const card = document.createElement('div');
         card.className = 'breakfast-card';
         let rows = '';
+        if (bf.desc)     rows += `<p class="breakfast-desc">${escHtml(bf.desc)}</p>`;
         if (bf.time)     rows += `<div class="breakfast-row"><span class="breakfast-key">시간</span><span class="breakfast-val">${escHtml(bf.time)}</span></div>`;
         if (bf.location) rows += `<div class="breakfast-row"><span class="breakfast-key">장소</span><span class="breakfast-val">${escHtml(bf.location)}</span></div>`;
         if (bf.menu)     rows += `<div class="breakfast-row"><span class="breakfast-key">메뉴</span><span class="breakfast-val">${escHtml(bf.menu)}</span></div>`;
