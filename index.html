@@ -732,10 +732,10 @@
        ════════════════════════════════════════════════════════ */
     const ACC_SUBTABS = [
       { id:'facilities', label:'시설안내'  },
+      { id:'smoking',    label:'흡연구역'  },
       { id:'wifi',       label:'와이파이'  },
       { id:'rooms',      label:'방배정'    },
       { id:'breakfast',  label:'Day 2 조식'},
-      { id:'cafes',      label:'근처 카페' },
     ];
     let activeAccTab = 'facilities';
 
@@ -829,7 +829,13 @@
         facPanel.appendChild(rows);
       });
 
-      // 흡연구역
+      inner.appendChild(facPanel);
+
+      // ─ 서브패널: 흡연구역 ─
+      const smokingPanel = document.createElement('div');
+      smokingPanel.className = 'acc-subpanel';
+      smokingPanel.dataset.panel = 'smoking';
+
       if (acc.smokingAreas && acc.smokingAreas.length) {
         const notice = document.createElement('div');
         notice.className = 'smoking-notice';
@@ -837,12 +843,18 @@
         notice.innerHTML = `
           <span class="smoking-icon">🚬</span>
           <div class="smoking-text">
-            <p class="smoking-title">흡연구역 (2곳)</p>
+            <p class="smoking-title">흡연구역 (${acc.smokingAreas.length}곳)</p>
             <div class="smoking-areas">${areasHtml}</div>
           </div>`;
-        facPanel.appendChild(notice);
+        smokingPanel.appendChild(notice);
+      } else {
+        smokingPanel.innerHTML = `<div class="placeholder-card">
+          <span class="placeholder-emoji">🚬</span>
+          <p class="placeholder-title">흡연구역 정보 준비 중</p>
+          <p class="placeholder-desc">현장 도착 후 안내드립니다.</p>
+        </div>`;
       }
-      inner.appendChild(facPanel);
+      inner.appendChild(smokingPanel);
 
       // ─ 서브패널: 와이파이 ─
       const wifiPanel = document.createElement('div');
@@ -937,32 +949,6 @@
       }
       inner.appendChild(breakfastPanel);
 
-      // ─ 서브패널: 근처 카페 ─
-      const cafesPanel = document.createElement('div');
-      cafesPanel.className = 'acc-subpanel';
-      cafesPanel.dataset.panel = 'cafes';
-
-      if (acc.cafes && acc.cafes.length) {
-        const list = document.createElement('div');
-        list.className = 'floor-blocks'; // reuse the card-list style
-        acc.cafes.forEach(c => {
-          const item = document.createElement('div');
-          item.className = 'space-item';
-          item.innerHTML = `<span class="space-name">${escHtml(c.name)}</span>
-            ${c.address ? `<span class="space-desc">${escHtml(c.address)}</span>` : ''}
-            ${c.hours   ? `<span class="space-desc">영업시간: ${escHtml(c.hours)}</span>` : ''}
-            ${c.note    ? `<span class="space-desc">${escHtml(c.note)}</span>` : ''}`;
-          list.appendChild(item);
-        });
-        cafesPanel.appendChild(list);
-      } else {
-        cafesPanel.innerHTML = `<div class="placeholder-card">
-          <span class="placeholder-emoji">☕</span>
-          <p class="placeholder-title">근처 카페 정보 준비 중</p>
-          <p class="placeholder-desc">주변 카페 정보가 업데이트됩니다.</p>
-        </div>`;
-      }
-      inner.appendChild(cafesPanel);
 
       panel.appendChild(inner);
       panelWrap.appendChild(panel);
