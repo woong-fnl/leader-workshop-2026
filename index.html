@@ -380,23 +380,32 @@
       if (bf.checklist && bf.checklist.length) {
         const section = document.createElement('div');
         section.className = 'briefing-section';
-        section.innerHTML = `<p class="briefing-section-title">준비물 체크리스트</p>`;
-        const cats = document.createElement('div');
-        cats.className = 'briefing-categories';
-        bf.checklist.forEach(cat => {
+        section.innerHTML = `<p class="briefing-section-title">준비물</p>`;
+        const prepList = document.createElement('div');
+        prepList.className = 'prep-list';
+        bf.checklist.forEach(item => {
           const card = document.createElement('div');
-          card.className = 'briefing-cat-card';
-          const itemsHtml = cat.items.map(it =>
-            `<div class="briefing-item">${escHtml(it)}</div>`
-          ).join('');
-          card.innerHTML = `<div class="briefing-cat-hd">
-            <span class="briefing-cat-emoji" aria-hidden="true">${escHtml(cat.emoji)}</span>
-            ${escHtml(cat.category)}
-          </div>
-          <div class="briefing-items">${itemsHtml}</div>`;
-          cats.appendChild(card);
+          card.className = 'prep-card';
+          card.innerHTML = `<div class="prep-main">
+            <div class="prep-icon" aria-hidden="true">${escHtml(item.emoji)}</div>
+            <div class="prep-content">
+              <p class="prep-title">${escHtml(item.title)}</p>
+              <p class="prep-desc">${escHtml(item.desc)}</p>
+            </div>
+          </div>`;
+          if (item.sub) {
+            const sub = document.createElement('div');
+            sub.className = `prep-sub type-${escHtml(item.sub.type)}`;
+            sub.innerHTML = `
+              <span class="prep-sub-emoji" aria-hidden="true">${escHtml(item.sub.emoji)}</span>
+              <span class="prep-sub-content">
+                <span class="prep-badge badge-${escHtml(item.sub.type)}">${escHtml(item.sub.badge)}</span>${escHtml(item.sub.text)}
+              </span>`;
+            card.appendChild(sub);
+          }
+          prepList.appendChild(card);
         });
-        section.appendChild(cats);
+        section.appendChild(prepList);
         inner.appendChild(section);
       }
 
