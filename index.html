@@ -473,7 +473,7 @@
         row.appendChild(tcol);
         row.appendChild(lcol);
 
-        const isCompact = (item.type === 'break' || item.type === 'move');
+        const isCompact = item.type === 'move' || item.title === '휴식 시간';
         if (isCompact) {
           const compact = document.createElement('div');
           compact.className = 'tl-compact';
