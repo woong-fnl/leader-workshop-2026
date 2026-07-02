@@ -1204,7 +1204,7 @@ a.tl-dm-loc:hover { color:var(--gold); }
 .act-card:hover { box-shadow:0 4px 18px rgba(13,27,42,.09); }
 
 .act-card-photo {
-  width:100%; height:155px;
+  width:100%; height:220px;
   background:var(--ground); overflow:hidden;
   display:flex; align-items:center; justify-content:center;
 }

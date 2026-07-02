@@ -69,8 +69,8 @@ const EVENT = {
         label: "1층",
         note:  "주차장에서 문이 연결되어 있어요.",
         spaces: [
-          { name: "대형세미나실", desc: "실제 세션이 진행되는 장소입니다.",                                                      image: "seminar.png",    icon: "ti-presentation" },
-          { name: "멀티룸",       desc: "대형스크린과 리클라이너소파가 있습니다. 편하게 쉬면서 이야기하는 공간으로 적당해요.", image: "multiroom.JPEG", icon: "ti-device-tv" },
+          { name: "대형세미나실", desc: "실제 세션이 진행되는 장소예요.",                                                        image: "seminar.png",    icon: "ti-presentation" },
+          { name: "멀티룸",       desc: "대형스크린과 리클라이너소파가 있어요. 편하게 쉬면서 이야기하는 공간으로 적당해요.", image: "multiroom.JPEG", icon: "ti-device-tv" },
           { name: "스크린골프",   desc: "",                                                                                       image: "screengolf.png", icon: "ti-golf" },
         ],
       },
@@ -79,7 +79,7 @@ const EVENT = {
         note:  "",
         spaces: [
           { name: "공용주방",           desc: "첫째 날 저녁식사 장소에요.",                                                        image: "kitchen.JPEG", icon: "ti-chef-hat" },
-          { name: "야외 정원",          desc: "2층에서 야외 정원으로 나갈 수 있어요. 정원 뒤편에 흡연장소도 마련되어 있습니다.", image: "garden.JPEG",  icon: "ti-plant-2" },
+          { name: "야외 정원",          desc: "2층에서 야외 정원으로 나갈 수 있어요. 정원 뒤편에 흡연장소도 마련되어 있어요.", image: "garden.JPEG",  icon: "ti-plant-2" },
           { name: "객실 201호 / 202호", desc: "",                                                                                   image: "room-2f.JPEG", icon: "ti-bed" },
         ],
       },
@@ -125,7 +125,7 @@ const EVENT = {
       items: [
         { time:"09:00 – 09:30", title:"집합",                         desc:"",                                                                                                                                                                                                                                                              note:"",                            location:"생각공장 당산 미팅룸 E",   locationUrl:"https://map.naver.com/v5/search/%EC%83%9D%EA%B0%81%EA%B3%B5%EC%9E%A5%20%EB%8B%B9%EC%82%B0", type:"session" },
         { time:"09:30 – 11:00", title:"이동",                         desc:"생각공장 당산 → 가평레저카트장",                                                                                                                                                                                                                               note:"버스",                        location:"",                          locationUrl:"",                                                                                            type:"move" },
-        { time:"11:00 – 12:00", title:"액티비티 (카트 + 사격)",       desc:"카트 1인승 + 사격",                                                                                                                                                                                                                                             note:"가평레저카트장",              activityId:"kart",        location:"가평레저카트장",          locationUrl:"https://map.naver.com/v5/search/%EA%B0%80%ED%8F%89%EB%A0%88%EC%A0%80%EC%B9%B4%ED%8A%B8%EC%9E%A5", type:"activity" },
+        { time:"11:00 – 12:00", title:"액티비티 (카트 + 사격)",       desc:"카트 1인승 + 사격",                                                                                                                                                                                                                                             note:"",                            activityId:"kart",        location:"가평레저카트장",          locationUrl:"https://map.naver.com/v5/search/%EA%B0%80%ED%8F%89%EB%A0%88%EC%A0%80%EC%B9%B4%ED%8A%B8%EC%9E%A5", type:"activity" },
         { time:"12:00 – 13:30", title:"점심 식사",                    desc:"BBQ와 수제맥주",                                                                                                                                                                                                                                               activityId:"lunch-day1", note:"",  location:"크레머리",                locationUrl:"https://map.naver.com/v5/search/%ED%81%AC%EB%A0%88%EB%A8%B8%EB%A6%AC%20%EA%B0%80%ED%8F%89",       type:"break" },
         { time:"13:30 – 14:00", title:"이동",                         desc:"크레머리 → 포유포레",                                                                                                                                                                                                                                          note:"버스",                        location:"",                          locationUrl:"",                                                                                            type:"move" },
         { time:"14:00 – 14:30", title:"도착 및 룸 배정",              desc:"워크숍 장소 도착 및 오리엔테이션",                                                                                                                                                                                                                             note:"",                            location:"포유포레",                locationUrl:"https://map.naver.com/v5/search/%ED%8F%AC%EC%9C%A0%ED%8F%AC%EB%A0%88",                           type:"session" },
@@ -142,10 +142,10 @@ const EVENT = {
       label: "Day 2",
       date:  "7월 10일 (금)",
       items: [
-        { time:"08:00 – 09:00", title:"조식 및 산책",    desc:"자유로운 아침 식사",               accTabId:"breakfast",                 note:"자율",      location:"포유포레", locationUrl:"https://map.naver.com/v5/search/%ED%8F%AC%EC%9C%A0%ED%8F%AC%EB%A0%88", type:"break" },
-        { time:"09:00 – 10:30", title:"개인정비",         desc:"개인정비 및 퇴실 준비",            note:"",          location:"",         locationUrl:"",                                                                     type:"break" },
+        { time:"08:00 – 09:00", title:"조식 및 산책",    desc:"자유로운 아침 식사 후 가볍게 산책",               accTabId:"breakfast",                 note:"자율",      location:"포유포레", locationUrl:"https://map.naver.com/v5/search/%ED%8F%AC%EC%9C%A0%ED%8F%AC%EB%A0%88", type:"break" },
+        { time:"09:00 – 10:30", title:"개인정비",         desc:"퇴실 준비 및 짐 정리",            note:"",          location:"",         locationUrl:"",                                                                     type:"break" },
         { time:"10:30 – 11:00", title:"퇴실",             desc:"",                                  note:"",          location:"포유포레", locationUrl:"https://map.naver.com/v5/search/%ED%8F%AC%EC%9C%A0%ED%8F%AC%EB%A0%88", type:"break" },
-        { time:"11:00 – 11:30", title:"이동",             desc:"포유포레 → 칠오75(닭갈비 + 막국수)", note:"버스",      location:"",         locationUrl:"",                                                                          type:"move" },
+        { time:"11:00 – 11:30", title:"이동",             desc:"포유포레 → 칠오닭갈비 물의정원점",   note:"버스",      location:"",         locationUrl:"",                                                                          type:"move" },
         { time:"11:30 – 12:30", title:"점심 식사",        desc:"닭갈비 or 막국수",                   activityId:"lunch-day2",   note:"",          location:"칠오닭갈비 물의정원점",   locationUrl:"https://map.naver.com/p/entry/place/1834204211?c=15.00,0,0,0,dh&placePath=%2Fhome%3Ffrom%3Dmap%26fromPanelNum%3D1%26additionalHeight%3D76%26timestamp%3D202607021357%26locale%3Dko%26svcName%3Dmap_pcv5", type:"break" },
         { time:"12:30 – 13:30", title:"관광",             desc:"두물머리 산책 및 단체사진 촬영. 산책 후 카페만경으로 집합해 주세요.", activityId:"duumulmeori", note:"카페만경 집합", location:"카페만경 (집합)", locationUrl:"https://map.naver.com/p/entry/place/33657350?lng=127.3159472&lat=37.5335238&placePath=%2Fhome%3Ffrom%3Dmap%26fromPanelNum%3D1%26additionalHeight%3D76%26timestamp%3D202607021623%26locale%3Dko%26svcName%3Dmap_pcv5&searchType=place&c=15.00,0,0,0,dh", type:"activity" },
         { time:"13:30 – 15:00", title:"이동",             desc:"두물머리 → 생각공장 당산",         note:"버스",      location:"",         locationUrl:"",                                                                     type:"move" },
@@ -169,7 +169,7 @@ const EVENT = {
         emoji: '👕',
         title: '의류',
         desc:  '외출용과 실내용을 편한 복장으로 챙겨주세요. 카트체험, 야외 산책 등이 예정되어 있어요.',
-        sub:   { type: 'optional', emoji: '🩱', badge: '선택', text: '수영복 — 숙소 안에 풀장이 준비되어 있어요. 필수지참은 아니에요. 선택적으로 챙겨주세요.' },
+        sub:   { type: 'optional', emoji: '🩱', badge: '선택', text: '수영복 — 숙소 안에 풀장이 준비되어 있어요. 필수 지참은 아니에요. 필요하신 분만 챙겨주세요.' },
       },
       {
         emoji: '🧴',
@@ -180,7 +180,7 @@ const EVENT = {
         emoji: '🕶️',
         title: '선글라스 · 선크림 · 양산',
         desc:  '야외 활동 시 자외선이 매우 강해요.',
-        sub:   { type: 'caution', emoji: '⚠️', badge: '주의', text: '카트 탑승 시 선글라스를 착용하면 돌이 튀어 기스가 날 수 있으니 주의하세요.' },
+        sub:   { type: 'caution', emoji: '⚠️', badge: '주의', text: '카트 탑승 시 선글라스를 착용하면 돌이 튀어 흠집이 생길 수 있으니 주의하세요.' },
       },
       {
         emoji: '⛳',
