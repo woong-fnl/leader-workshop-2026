@@ -119,6 +119,23 @@
     <p id="footer-info"></p>
   </footer>
 
+  <!-- ══ 시설 상세 모달 ════════════════════════════════════════ -->
+  <div class="fac-modal" id="fac-modal" role="dialog" aria-modal="true" aria-label="시설 상세">
+    <div class="fac-modal-bd" id="fac-modal-bd"></div>
+    <div class="fac-modal-sheet">
+      <div class="fac-modal-handle" aria-hidden="true"></div>
+      <button class="fac-modal-close" id="fac-modal-close" aria-label="닫기">
+        <i class="ti ti-x" aria-hidden="true"></i>
+      </button>
+      <div class="fac-modal-photo" id="fac-modal-photo"></div>
+      <div class="fac-modal-body">
+        <p class="fac-modal-floor" id="fac-modal-floor"></p>
+        <p class="fac-modal-name"  id="fac-modal-name"></p>
+        <p class="fac-modal-desc"  id="fac-modal-desc"></p>
+      </div>
+    </div>
+  </div>
+
   <script src="data.js"></script>
   <script>
   (() => {
@@ -309,30 +326,70 @@
     };
 
     function buildTimeline(items) {
-      const ol = document.createElement('ol');
-      ol.className = 'timeline';
+      const track = document.createElement('div');
+      track.className = 'tl-track';
+
       items.forEach(item => {
-        const li = document.createElement('li');
-        li.className = 'timeline-item ' + (TYPE_CLS[item.type] || '');
-        const desc = item.desc ? `<p class="tl-desc">${escHtml(item.desc)}</p>` : '';
-        const note = item.note ? `<span class="tl-note">${escHtml(item.note)}</span>` : '';
-        const loc  = item.location && item.locationUrl
-          ? `<a class="tl-location" href="${escAttr(item.locationUrl)}"
-               target="_blank" rel="noopener noreferrer">
-               ${PIN_SVG}${escHtml(item.location)}</a>`
-          : item.location
-            ? `<span class="tl-note">${escHtml(item.location)}</span>` : '';
-        const meta = (note || loc) ? `<div class="tl-meta">${note}${loc}</div>` : '';
-        li.innerHTML = `
-          <div class="tl-time" aria-hidden="true">${escHtml(item.time)}</div>
-          <div class="tl-body">
-            <p class="tl-title">
-              <span class="sr-only">${escHtml(item.time)} — </span>${escHtml(item.title)}
-            </p>${desc}${meta}
-          </div>`;
-        ol.appendChild(li);
+        const typeCls = TYPE_CLS[item.type] || '';
+        const row = document.createElement('div');
+        row.className = 'tl-row' + (typeCls ? ' ' + typeCls : '');
+
+        // Parse start time → hour / minute parts
+        const startTime = item.time.split(/\s*[–\-]\s*/)[0].trim();
+        const [hh, mm] = startTime.split(':');
+
+        // Time column
+        const tcol = document.createElement('div');
+        tcol.className = 'tl-tcol';
+        tcol.setAttribute('aria-hidden', 'true');
+        tcol.innerHTML = `<span class="tl-th">${escHtml(hh || '??')}</span>`
+                       + `<span class="tl-tm">:${escHtml(mm || '00')}</span>`;
+
+        // Dot + connector column
+        const lcol = document.createElement('div');
+        lcol.className = 'tl-lcol';
+        lcol.innerHTML = `<div class="tl-dot"></div><div class="tl-conn"></div>`;
+
+        row.appendChild(tcol);
+        row.appendChild(lcol);
+
+        const isCompact = (item.type === 'break' || item.type === 'move');
+        if (isCompact) {
+          const compact = document.createElement('div');
+          compact.className = 'tl-compact';
+          let inner = `<span class="sr-only">${escHtml(item.time)} — </span>`
+                    + `<span class="tl-title">${escHtml(item.title)}</span>`;
+          if (item.desc) inner += `<span class="tl-note">${escHtml(item.desc)}</span>`;
+          if (item.note) inner += `<span class="tl-note">${escHtml(item.note)}</span>`;
+          if (item.location && item.locationUrl) {
+            inner += `<a class="tl-location" href="${escAttr(item.locationUrl)}"
+              target="_blank" rel="noopener noreferrer">${PIN_SVG}${escHtml(item.location)}</a>`;
+          } else if (item.location) {
+            inner += `<span class="tl-note">${escHtml(item.location)}</span>`;
+          }
+          compact.innerHTML = inner;
+          row.appendChild(compact);
+        } else {
+          const card = document.createElement('div');
+          card.className = 'tl-card';
+          const desc = item.desc
+            ? `<p class="tl-desc">${escHtml(item.desc).replace(/\n/g,'<br>')}</p>` : '';
+          const note = item.note ? `<span class="tl-note">${escHtml(item.note)}</span>` : '';
+          const loc  = item.location && item.locationUrl
+            ? `<a class="tl-location" href="${escAttr(item.locationUrl)}"
+                 target="_blank" rel="noopener noreferrer">${PIN_SVG}${escHtml(item.location)}</a>`
+            : item.location ? `<span class="tl-note">${escHtml(item.location)}</span>` : '';
+          const meta = (note || loc) ? `<div class="tl-meta">${note}${loc}</div>` : '';
+          card.innerHTML = `<p class="tl-title">
+            <span class="sr-only">${escHtml(item.time)} — </span>${escHtml(item.title)}
+          </p>${desc}${meta}`;
+          row.appendChild(card);
+        }
+
+        track.appendChild(row);
       });
-      return ol;
+
+      return track;
     }
 
     EVENT.days.forEach((day, i) => {
@@ -466,30 +523,54 @@
       });
       inner.appendChild(tabBar);
 
-      // ─ 서브패널: 시설안내 ─
+      // ─ 서브패널: 시설안내 (Option C — 층별 스트립 + 클릭 모달) ─
       const facPanel = document.createElement('div');
       facPanel.className = 'acc-subpanel is-active';
       facPanel.dataset.panel = 'facilities';
 
-      const floorBlocks = document.createElement('div');
-      floorBlocks.className = 'floor-blocks';
       acc.floors.forEach(floor => {
-        const block = document.createElement('div');
-        block.className = 'floor-block';
-        let html = `<div class="floor-label">${escHtml(floor.label)}</div>`;
-        if (floor.note) html += `<p class="floor-note">${escHtml(floor.note)}</p>`;
-        html += `<div class="space-list">`;
+        const floorNum = floor.label.replace(/[^0-9]/g, '');
+
+        // Navy floor header band
+        const hd = document.createElement('div');
+        hd.className = 'acc-floor-hd';
+        hd.innerHTML = `<span class="acc-floor-hd-num">${escHtml(floorNum)}</span>`
+                     + `<span class="acc-floor-hd-f">F</span>`
+                     + (floor.note ? `<span class="acc-floor-hd-note">${escHtml(floor.note)}</span>` : '')
+                     + `<span class="acc-floor-hd-count">${floor.spaces.length}개</span>`;
+        facPanel.appendChild(hd);
+
+        // Clickable facility rows
+        const rows = document.createElement('div');
+        rows.className = 'acc-fac-rows';
         floor.spaces.forEach(sp => {
-          html += `<div class="space-item">
-            <span class="space-name">${escHtml(sp.name)}</span>
-            ${sp.desc ? `<span class="space-desc">${escHtml(sp.desc)}</span>` : ''}
-          </div>`;
+          const row = document.createElement('div');
+          row.className = 'acc-fac-row';
+          row.setAttribute('role', 'button');
+          row.setAttribute('tabindex', '0');
+          row.setAttribute('aria-label', `${sp.name} 상세보기`);
+
+          const thumbHtml = sp.image
+            ? `<div class="acc-fac-thumb">
+                 <img src="images/facilities/${escAttr(sp.image)}" alt="${escAttr(sp.name)}" loading="lazy">
+               </div>`
+            : `<div class="acc-fac-thumb"><i class="ti ${escAttr(sp.icon || 'ti-building')}" aria-hidden="true"></i></div>`;
+
+          row.innerHTML = `${thumbHtml}
+            <div class="acc-fac-info">
+              <p class="acc-fac-name">${escHtml(sp.name)}</p>
+              ${sp.desc ? `<p class="acc-fac-desc">${escHtml(sp.desc)}</p>` : ''}
+            </div>
+            <i class="ti ti-chevron-right acc-fac-chev" aria-hidden="true"></i>`;
+
+          const payload = { floor: floor.label, name: sp.name, desc: sp.desc, image: sp.image, icon: sp.icon };
+          const open = () => openFacModal(payload);
+          row.addEventListener('click', open);
+          row.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+          rows.appendChild(row);
         });
-        html += `</div>`;
-        block.innerHTML = html;
-        floorBlocks.appendChild(block);
+        facPanel.appendChild(rows);
       });
-      facPanel.appendChild(floorBlocks);
 
       // 흡연구역
       if (acc.smokingAreas && acc.smokingAreas.length) {
@@ -649,10 +730,36 @@
       results.innerHTML = '';
     }
 
+    /* ── 시설 모달 ──────────────────────────────────────────── */
+    function openFacModal(sp) {
+      const modal     = $('fac-modal');
+      const photoArea = $('fac-modal-photo');
+      $('fac-modal-floor').textContent = sp.floor || '';
+      $('fac-modal-name').textContent  = sp.name  || '';
+      $('fac-modal-desc').textContent  = sp.desc  || '';
+      photoArea.innerHTML = sp.image
+        ? `<img src="images/facilities/${escAttr(sp.image)}" alt="${escAttr(sp.name)}">`
+        : `<div class="fac-modal-photo-ph">
+             <i class="ti ${escAttr(sp.icon || 'ti-building')}" aria-hidden="true"></i>
+             <span>사진 준비 중</span>
+           </div>`;
+      modal.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeFacModal() {
+      $('fac-modal').classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+    $('fac-modal-bd').addEventListener('click', closeFacModal);
+    $('fac-modal-close').addEventListener('click', closeFacModal);
+
     openBtn.addEventListener('click', openSearch);
     closeBtn.addEventListener('click', closeSearch);
     document.addEventListener('keydown', ev => {
-      if (ev.key === 'Escape' && overlay.classList.contains('is-open')) closeSearch();
+      if (ev.key === 'Escape') {
+        if ($('fac-modal').classList.contains('is-open')) { closeFacModal(); return; }
+        if (overlay.classList.contains('is-open')) closeSearch();
+      }
     });
 
     let debounce;

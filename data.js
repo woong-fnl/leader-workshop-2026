@@ -58,38 +58,40 @@ const EVENT = {
     ],
 
     // 층별 시설 안내
+    // image: 사진 파일명 (images/facilities/ 폴더에 넣어두세요)
+    // icon:  Tabler 아이콘 이름 (사진 없을 때 표시)
     floors: [
       {
         label: "1층",
         note:  "주차장에서 문이 연결되어 있어요.",
         spaces: [
-          { name: "대형세미나실", desc: "실제 세션이 진행되는 장소입니다." },
-          { name: "멀티룸",       desc: "대형스크린과 리클라이너소파가 있습니다. 편하게 쉬면서 이야기하는 공간으로 적당해요." },
-          { name: "사우나 & 스파",desc: "" },
-          { name: "스크린골프",   desc: "" },
+          { name: "대형세미나실", desc: "실제 세션이 진행되는 장소입니다.",                                                      image: "", icon: "ti-presentation" },
+          { name: "멀티룸",       desc: "대형스크린과 리클라이너소파가 있습니다. 편하게 쉬면서 이야기하는 공간으로 적당해요.", image: "", icon: "ti-device-tv" },
+          { name: "사우나 & 스파",desc: "",                                                                                       image: "", icon: "ti-ripple" },
+          { name: "스크린골프",   desc: "",                                                                                       image: "", icon: "ti-golf" },
         ],
       },
       {
         label: "2층",
         note:  "",
         spaces: [
-          { name: "공용주방",  desc: "첫째 날 저녁식사 장소에요." },
-          { name: "야외 정원", desc: "2층에서 야외 정원으로 나갈 수 있어요. 정원 뒤편에 흡연장소도 마련되어 있습니다." },
-          { name: "객실 201호 / 202호", desc: "" },
+          { name: "공용주방",           desc: "첫째 날 저녁식사 장소에요.",                                                        image: "", icon: "ti-chef-hat" },
+          { name: "야외 정원",          desc: "2층에서 야외 정원으로 나갈 수 있어요. 정원 뒤편에 흡연장소도 마련되어 있습니다.", image: "", icon: "ti-plant-2" },
+          { name: "객실 201호 / 202호", desc: "",                                                                                   image: "", icon: "ti-bed" },
         ],
       },
       {
         label: "3층",
         note:  "",
         spaces: [
-          { name: "객실 301호 · 302호 · 303호 · 304호 · 305호", desc: "" },
+          { name: "객실 301호 · 302호 · 303호 · 304호 · 305호", desc: "", image: "", icon: "ti-bed" },
         ],
       },
       {
         label: "4층",
         note:  "",
         spaces: [
-          { name: "객실 401호 / 402호", desc: "" },
+          { name: "객실 401호 / 402호", desc: "", image: "", icon: "ti-bed" },
         ],
       },
     ],
