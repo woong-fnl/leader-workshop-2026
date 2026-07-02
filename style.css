@@ -906,8 +906,8 @@ footer strong { color:rgba(255,255,255,.6); }
 .prep-sub {
   margin:0 .9rem .9rem;
   padding:.65rem .9rem; border-radius:10px;
-  display:flex; align-items:flex-start; gap:.5rem;
-  font-size:.77rem; line-height:1.6;
+  display:flex; align-items:center; gap:.55rem;
+  font-size:.77rem; line-height:1.55;
 }
 .prep-sub.type-optional {
   background:rgba(46,139,90,.07); border:1px solid rgba(46,139,90,.18);
@@ -921,14 +921,15 @@ footer strong { color:rgba(255,255,255,.6); }
   background:rgba(74,111,165,.07); border:1px solid rgba(74,111,165,.18);
   color:var(--steel);
 }
-.prep-sub-emoji { font-size:.95rem; flex-shrink:0; margin-top:.05rem; }
+.prep-sub-emoji { font-size:1rem; flex-shrink:0; line-height:1; }
 .prep-sub-content { flex:1; }
 
 .prep-badge {
   display:inline-block; font-size:.58rem; font-weight:800;
   letter-spacing:.06em; text-transform:uppercase;
-  padding:.08rem .45rem; border-radius:20px;
-  margin-right:.35rem; vertical-align:middle;
+  padding:.1rem .45rem; border-radius:20px;
+  margin-right:.35rem; vertical-align:baseline;
+  position:relative; top:-.05em;
 }
 .prep-badge.badge-optional { background:rgba(46,139,90,.18);  color:#2E8B5A; }
 .prep-badge.badge-caution  { background:rgba(214,100,19,.16); color:#c05a10; }

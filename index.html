@@ -367,15 +367,6 @@
         </a>` : ''}`;
       inner.appendChild(meetCard);
 
-      // 복장 안내
-      if (bf.attire) {
-        const attireDiv = document.createElement('div');
-        attireDiv.className = 'briefing-attire';
-        attireDiv.innerHTML = `<i class="ti ti-shirt" aria-hidden="true"></i>
-          <span><strong>복장 안내:</strong> ${escHtml(bf.attire)}</span>`;
-        inner.appendChild(attireDiv);
-      }
-
       // 준비물 체크리스트
       if (bf.checklist && bf.checklist.length) {
         const section = document.createElement('div');
