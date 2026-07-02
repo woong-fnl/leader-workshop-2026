@@ -3,78 +3,91 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0D1B2A" />
+  <meta name="theme-color" content="#0F2238" />
   <title>2026 에프앤엘 리더십 워크숍</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- 공지 띠 -->
   <div id="notice-bar" role="status"></div>
 
-  <!-- 헤더 -->
-  <header>
-    <div class="nav-inner">
+  <!-- ══ 사이드바 (데스크탑) ══════════════════════════════════ -->
+  <aside class="sidebar" aria-label="내비게이션">
 
-      <!-- 로고: images/logo.png 가 있으면 이미지, 없으면 텍스트 표시 -->
-      <a class="nav-logo" href="#top" aria-label="홈으로">
-        <img src="images/logo.png" alt="에프앤엘" class="logo-img"
-             onerror="this.hidden=true;this.nextElementSibling.hidden=false">
-        <span class="logo-fallback" hidden>에프앤엘</span>
-      </a>
+    <!-- 로고: images/logo.png 넣으면 자동 표시, 없으면 텍스트 -->
+    <a class="sidebar-logo" href="#top" aria-label="홈">
+      <img src="images/logo.png" alt="에프앤엘" class="sidebar-logo-img"
+           onerror="this.hidden=true;this.nextElementSibling.hidden=false">
+      <span class="sidebar-logo-text" hidden>에프앤엘</span>
+    </a>
 
-      <!-- Day 탭 -->
-      <div class="day-switcher" role="tablist" id="day-tabs" aria-label="날짜 선택"></div>
+    <!-- Day 탭 (JS가 렌더링) -->
+    <nav class="sidebar-nav" id="sidebar-tabs" role="tablist" aria-label="날짜 선택"></nav>
 
-      <!-- 검색 버튼 -->
-      <button class="search-btn" id="search-open-btn" aria-label="검색 열기" aria-expanded="false">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-        </svg>
-        <span class="search-btn-text">검색</span>
-      </button>
+    <hr class="sidebar-hr" />
 
-    </div>
-  </header>
-
-  <!-- 검색 패널 (header 바로 아래 fixed) -->
-  <div class="search-panel" id="search-panel" role="search" aria-label="일정 검색">
-    <div class="search-input-row">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-           stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
-           aria-hidden="true" style="flex-shrink:0;color:var(--text-muted)">
+    <!-- 검색 -->
+    <button class="sidebar-search-btn" id="search-open-btn" aria-label="검색 열기">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
       </svg>
-      <input type="search" class="search-input" id="search-input"
-             placeholder="검색 (예: 점심, 흡연, 포유포레, 이동)" autocomplete="off" />
+      검색
+    </button>
+
+  </aside>
+
+  <!-- ══ 하단 탭바 (모바일) ═══════════════════════════════════ -->
+  <nav class="mobile-tabs" id="mobile-tabs" aria-label="날짜 선택"></nav>
+
+  <!-- ══ 검색 오버레이 ════════════════════════════════════════ -->
+  <div class="search-overlay" id="search-overlay" role="search" aria-label="일정 검색">
+    <div class="search-top-bar">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input class="search-input" id="search-input" type="search"
+             placeholder="검색 (예: 점심, 흡연, 포유포레, 이동)"
+             autocomplete="off" aria-label="검색어 입력" />
       <button class="search-close-btn" id="search-close-btn" aria-label="검색 닫기">✕</button>
     </div>
     <div class="search-results" id="search-results" aria-live="polite"></div>
   </div>
 
+  <!-- ══ 메인 콘텐츠 ══════════════════════════════════════════ -->
   <main id="top">
 
-    <!-- 히어로 -->
     <section id="hero">
       <div class="hero-inner">
+
+        <!-- 모바일 전용 로고 -->
+        <div class="hero-logo-mobile" aria-hidden="true">
+          <img src="images/logo.png" alt="" class="hero-logo-mobile-img"
+               onerror="this.hidden=true;this.nextElementSibling.hidden=false">
+          <span class="hero-logo-mobile-text" hidden>에프앤엘</span>
+        </div>
+
         <p class="hero-kicker">FNL Leadership Workshop</p>
         <h1 class="hero-title" id="hero-title"></h1>
         <p class="hero-subtitle" id="hero-subtitle"></p>
+
         <div class="hero-chips">
           <span class="chip" id="chip-date">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="3" y="4" width="18" height="18" rx="2"/>
-              <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
-              <line x1="3" y1="10" x2="21" y2="10"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8"  y1="2" x2="8"  y2="6"/>
+              <line x1="3"  y1="10" x2="21" y2="10"/>
             </svg>
             <span></span>
           </span>
           <span class="chip" id="chip-time">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
             </svg>
             <span></span>
           </span>
@@ -87,6 +100,7 @@
             <span></span>
           </a>
         </div>
+
       </div>
     </section>
 
@@ -103,42 +117,40 @@
   <script src="data.js"></script>
   <script>
   (() => {
-    // ── XSS 방지 헬퍼 ─────────────────────────────────────────
+    /* ── 헬퍼 ─────────────────────────────────────────────── */
+    const $ = id => document.getElementById(id);
     const escHtml = s => String(s)
       .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
       .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-    const escAttr = s => String(s).replace(/[^a-zA-Z0-9_\-.:\/\?=%&+#]/g,
+    const escAttr = s => String(s).replace(/[^a-zA-Z0-9_./:?=%&+#-]/g,
       c => `&#${c.charCodeAt(0)};`);
 
-    // ── 메타 ─────────────────────────────────────────────────
-    document.title = EVENT.title;
-    const e = id => document.getElementById(id);
-
-    if (EVENT.notice) e('notice-bar').textContent = '📌 ' + EVENT.notice;
-
-    // ── 히어로 ────────────────────────────────────────────────
-    e('hero-title').textContent = EVENT.title;
-    e('hero-subtitle').textContent = EVENT.subtitle;
-    e('chip-date').querySelector('span').textContent = EVENT.date;
-    e('chip-time').querySelector('span').textContent = EVENT.time;
-    const venueChip = e('chip-venue');
-    venueChip.querySelector('span').textContent = EVENT.venue;
-    venueChip.href = 'https://map.naver.com/v5/search/' + encodeURIComponent(EVENT.address);
-
-    // ── 푸터 ─────────────────────────────────────────────────
-    e('footer-title').textContent = EVENT.title;
-    e('footer-info').textContent = EVENT.date + '  ·  ' + EVENT.venue;
-
-    // ── 타임라인 빌더 ─────────────────────────────────────────
-    const TYPE_CLS = {
-      keynote: 'is-keynote', activity: 'is-activity',
-      networking: 'is-networking', break: 'is-break', move: 'is-move',
-    };
     const PIN_SVG = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-        stroke-linejoin="round" aria-hidden="true">
-        <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/>
-        <circle cx="12" cy="10" r="3"/></svg>`;
+      stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+      stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/>
+      <circle cx="12" cy="10" r="3"/></svg>`;
+
+    /* ── 기본 정보 채우기 ─────────────────────────────────── */
+    document.title = EVENT.title;
+    if (EVENT.notice) $('notice-bar').textContent = '📌 ' + EVENT.notice;
+
+    $('hero-title').textContent    = EVENT.title;
+    $('hero-subtitle').textContent = EVENT.subtitle;
+    $('chip-date').querySelector('span').textContent  = EVENT.date;
+    $('chip-time').querySelector('span').textContent  = EVENT.time;
+    const vc = $('chip-venue');
+    vc.querySelector('span').textContent = EVENT.venue;
+    vc.href = 'https://map.naver.com/v5/search/' + encodeURIComponent(EVENT.address);
+
+    $('footer-title').textContent = EVENT.title;
+    $('footer-info').textContent  = EVENT.date + '  ·  ' + EVENT.venue;
+
+    /* ── 타임라인 빌더 ───────────────────────────────────── */
+    const TYPE_CLS = {
+      keynote:'is-keynote', activity:'is-activity',
+      networking:'is-networking', break:'is-break', move:'is-move',
+    };
 
     function buildTimeline(items) {
       const ol = document.createElement('ol');
@@ -146,19 +158,15 @@
       items.forEach(item => {
         const li = document.createElement('li');
         li.className = 'timeline-item ' + (TYPE_CLS[item.type] || '');
-        const desc = item.desc
-          ? `<p class="tl-desc">${escHtml(item.desc)}</p>` : '';
-        const notePart = item.note
-          ? `<span class="tl-note">${escHtml(item.note)}</span>` : '';
-        const locPart = item.location && item.locationUrl
+        const desc = item.desc ? `<p class="tl-desc">${escHtml(item.desc)}</p>` : '';
+        const note = item.note ? `<span class="tl-note">${escHtml(item.note)}</span>` : '';
+        const loc  = item.location && item.locationUrl
           ? `<a class="tl-location" href="${escAttr(item.locationUrl)}"
                target="_blank" rel="noopener noreferrer">
-               ${PIN_SVG}${escHtml(item.location)}
-             </a>`
+               ${PIN_SVG}${escHtml(item.location)}</a>`
           : item.location
             ? `<span class="tl-note">${escHtml(item.location)}</span>` : '';
-        const meta = (notePart || locPart)
-          ? `<div class="tl-meta">${notePart}${locPart}</div>` : '';
+        const meta = (note || loc) ? `<div class="tl-meta">${note}${loc}</div>` : '';
         li.innerHTML = `
           <div class="tl-time" aria-hidden="true">${escHtml(item.time)}</div>
           <div class="tl-body">
@@ -171,126 +179,150 @@
       return ol;
     }
 
-    // ── Day 탭 + 패널 렌더링 ──────────────────────────────────
-    const tabBar   = e('day-tabs');
-    const panelWrap = e('day-panels');
-    let activeDay  = 0;
+    /* ── Day 탭 & 패널 렌더링 ────────────────────────────── */
+    let activeDay = 0;
+    const sidebarNav = $('sidebar-tabs');
+    const mobileNav  = $('mobile-tabs');
+    const panelWrap  = $('day-panels');
 
     EVENT.days.forEach((day, i) => {
-      // 탭 버튼
-      const btn = document.createElement('button');
-      btn.className = 'day-tab';
-      btn.setAttribute('role', 'tab');
-      btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
-      btn.setAttribute('aria-controls', `panel-${i}`);
-      btn.id = `tab-${i}`;
-      btn.innerHTML = `<span class="day-tab-label">${escHtml(day.label)}</span>
-                       <span class="day-tab-date">${escHtml(day.date)}</span>`;
-      btn.addEventListener('click', () => switchDay(i));
-      tabBar.appendChild(btn);
 
-      // 패널
+      /* 사이드바 탭 */
+      const sbBtn = document.createElement('button');
+      sbBtn.className = 'sidebar-day-tab' + (i === 0 ? ' is-active' : '');
+      sbBtn.setAttribute('role', 'tab');
+      sbBtn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+      sbBtn.setAttribute('aria-controls', `panel-${i}`);
+      sbBtn.id = `sb-tab-${i}`;
+      sbBtn.innerHTML = `<span class="sidebar-tab-label">${escHtml(day.label)}</span>
+                         <span class="sidebar-tab-date">${escHtml(day.date)}</span>`;
+      sbBtn.addEventListener('click', () => switchDay(i));
+      sidebarNav.appendChild(sbBtn);
+
+      /* 모바일 탭 */
+      const mbBtn = document.createElement('button');
+      mbBtn.className = 'mobile-tab' + (i === 0 ? ' is-active' : '');
+      mbBtn.id = `mb-tab-${i}`;
+      mbBtn.setAttribute('aria-label', `${day.label} ${day.date}`);
+      mbBtn.innerHTML = `
+        <svg class="mobile-tab-icon" width="16" height="16" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+             stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        <span class="mobile-tab-label">${escHtml(day.label)}</span>
+        <span class="mobile-tab-date">${escHtml(day.date)}</span>`;
+      mbBtn.addEventListener('click', () => switchDay(i));
+      mobileNav.appendChild(mbBtn);
+
+      /* 패널 */
       const panel = document.createElement('div');
       panel.className = 'day-panel' + (i === 0 ? ' is-active' : '');
       panel.id = `panel-${i}`;
       panel.setAttribute('role', 'tabpanel');
-      panel.setAttribute('aria-labelledby', `tab-${i}`);
-
+      panel.setAttribute('aria-labelledby', `sb-tab-${i}`);
       const inner = document.createElement('div');
       inner.className = 'day-panel-inner';
-
-      const heading = document.createElement('div');
-      heading.className = 'day-heading';
-      heading.innerHTML = `<span class="day-heading-label">${escHtml(day.label)}</span>
-                           <span class="day-heading-date">${escHtml(day.date)}</span>`;
-      inner.appendChild(heading);
+      inner.innerHTML = `<div class="day-heading">
+        <span class="day-heading-label">${escHtml(day.label)}</span>
+        <span class="day-heading-date">${escHtml(day.date)}</span>
+      </div>`;
       inner.appendChild(buildTimeline(day.items));
       panel.appendChild(inner);
       panelWrap.appendChild(panel);
     });
 
+    /* 모바일 검색 탭 */
+    const mbSearch = document.createElement('button');
+    mbSearch.className = 'mobile-tab';
+    mbSearch.setAttribute('aria-label', '검색');
+    mbSearch.innerHTML = `
+      <svg class="mobile-tab-icon" width="16" height="16" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+           stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <span class="mobile-tab-label">검색</span>`;
+    mbSearch.addEventListener('click', openSearch);
+    mobileNav.appendChild(mbSearch);
+
+    /* ── Day 전환 ────────────────────────────────────────── */
     function switchDay(idx) {
       if (idx === activeDay) return;
       activeDay = idx;
-      tabBar.querySelectorAll('.day-tab').forEach((b, i) => {
+      document.querySelectorAll('.sidebar-day-tab').forEach((b, i) => {
+        b.classList.toggle('is-active', i === idx);
         b.setAttribute('aria-selected', i === idx ? 'true' : 'false');
       });
-      panelWrap.querySelectorAll('.day-panel').forEach((p, i) => {
+      document.querySelectorAll('[id^="mb-tab-"]').forEach((b, i) => {
+        b.classList.toggle('is-active', i === idx);
+      });
+      document.querySelectorAll('.day-panel').forEach((p, i) => {
         const wasActive = p.classList.contains('is-active');
         p.classList.toggle('is-active', i === idx);
-        // 재-애니메이션 트리거
         if (i === idx && !wasActive) {
           p.style.animation = 'none';
           requestAnimationFrame(() => { p.style.animation = ''; });
         }
       });
+      // 모바일: 패널 상단으로 스크롤
+      if (window.innerWidth < 768) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     }
 
-    // ── 검색 ─────────────────────────────────────────────────
-    const searchPanel    = e('search-panel');
-    const searchInput    = e('search-input');
-    const searchResults  = e('search-results');
-    const openBtn        = e('search-open-btn');
-    const closeBtn       = e('search-close-btn');
+    /* ── 검색 ────────────────────────────────────────────── */
+    const overlay   = $('search-overlay');
+    const input     = $('search-input');
+    const results   = $('search-results');
+    const openBtn   = $('search-open-btn');
+    const closeBtn  = $('search-close-btn');
 
     function openSearch() {
-      searchPanel.classList.add('is-open');
-      openBtn.setAttribute('aria-expanded', 'true');
-      searchInput.focus();
+      overlay.classList.add('is-open');
+      input.focus();
     }
-
     function closeSearch() {
-      searchPanel.classList.remove('is-open');
-      openBtn.setAttribute('aria-expanded', 'false');
-      searchInput.value = '';
-      searchResults.innerHTML = '';
-      openBtn.focus();
+      overlay.classList.remove('is-open');
+      input.value = '';
+      results.innerHTML = '';
     }
 
     openBtn.addEventListener('click', openSearch);
     closeBtn.addEventListener('click', closeSearch);
     document.addEventListener('keydown', ev => {
-      if (ev.key === 'Escape' && searchPanel.classList.contains('is-open')) closeSearch();
+      if (ev.key === 'Escape' && overlay.classList.contains('is-open')) closeSearch();
     });
 
-    // 검색 실행 (디바운스 80ms)
-    let debounceTimer;
-    searchInput.addEventListener('input', () => {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => renderSearchResults(searchInput.value), 80);
+    let debounce;
+    input.addEventListener('input', () => {
+      clearTimeout(debounce);
+      debounce = setTimeout(() => renderSearch(input.value), 80);
     });
 
-    function normalizeQuery(q) {
-      return q.trim().toLowerCase();
-    }
+    function renderSearch(raw) {
+      const q = raw.trim().toLowerCase();
+      if (!q) { results.innerHTML = ''; return; }
 
-    function matchText(text, q) {
-      return text.toLowerCase().includes(q);
-    }
-
-    function renderSearchResults(rawQuery) {
-      const q = normalizeQuery(rawQuery);
-      if (!q) { searchResults.innerHTML = ''; return; }
-
-      const scheduleHits = [];
-      EVENT.days.forEach((day, dayIdx) => {
+      const schedHits = [];
+      EVENT.days.forEach((day, di) => {
         day.items.forEach(item => {
-          const haystack = [item.title, item.desc, item.note, item.location].join(' ');
-          if (matchText(haystack, q)) {
-            scheduleHits.push({ day, dayIdx, item });
+          if ([item.title, item.desc, item.note, item.location].join(' ').toLowerCase().includes(q)) {
+            schedHits.push({ day, di, item });
           }
         });
       });
 
-      const tipHits = (EVENT.tips || []).filter(tip => {
-        const kwMatch = tip.keywords.some(k => k.toLowerCase().includes(q) || q.includes(k.toLowerCase()));
-        const textMatch = matchText(tip.title + ' ' + tip.desc, q);
-        return kwMatch || textMatch;
-      });
+      const tipHits = (EVENT.tips || []).filter(t =>
+        t.keywords.some(k => k.toLowerCase().includes(q) || q.includes(k.toLowerCase())) ||
+        (t.title + ' ' + t.desc).toLowerCase().includes(q)
+      );
 
-      if (!scheduleHits.length && !tipHits.length) {
-        searchResults.innerHTML = `<div class="search-empty">
-          "<strong>${escHtml(rawQuery)}</strong>" 에 대한 결과가 없습니다.
+      if (!schedHits.length && !tipHits.length) {
+        results.innerHTML = `<div class="search-empty">
+          "<strong>${escHtml(raw)}</strong>" 검색 결과가 없습니다.
         </div>`;
         return;
       }
@@ -298,61 +330,52 @@
       const wrap = document.createElement('div');
       wrap.className = 'search-results-inner';
 
-      if (scheduleHits.length) {
-        const label = document.createElement('p');
-        label.className = 'search-section-label';
-        label.textContent = '일정';
-        wrap.appendChild(label);
+      if (schedHits.length) {
+        const lbl = document.createElement('p');
+        lbl.className = 'search-section-label';
+        lbl.textContent = '일정';
+        wrap.appendChild(lbl);
 
-        scheduleHits.forEach(({ day, dayIdx, item }) => {
-          const a = document.createElement('div');
-          a.className = 'search-result-item';
-          a.setAttribute('role', 'button');
-          a.setAttribute('tabindex', '0');
-          const badgeCls = dayIdx === 0 ? 'day1' : 'day2';
-          const descText = item.desc ? item.desc.replace(/\n/g, ' ').slice(0, 60) + (item.desc.length > 60 ? '…' : '') : (item.note || '');
-          a.innerHTML = `
+        schedHits.forEach(({ day, di, item }) => {
+          const el = document.createElement('div');
+          el.className = 'search-result-item';
+          el.setAttribute('role', 'button');
+          el.setAttribute('tabindex', '0');
+          const preview = item.desc ? item.desc.replace(/\n/g,' ').slice(0,60) + (item.desc.length > 60 ? '…' : '') : (item.note || '');
+          el.innerHTML = `
             <div class="search-result-meta">
               <span class="search-result-title">${escHtml(item.title)}</span>
-              ${descText ? `<span class="search-result-desc">${escHtml(descText)}</span>` : ''}
+              ${preview ? `<span class="search-result-desc">${escHtml(preview)}</span>` : ''}
               <span class="search-result-time">${escHtml(item.time)}</span>
             </div>
-            <span class="search-badge ${badgeCls}">${escHtml(day.label)}</span>`;
-          // 클릭 시 해당 Day로 이동
-          const handler = () => {
-            switchDay(dayIdx);
-            closeSearch();
-            setTimeout(() => {
-              document.getElementById(`panel-${dayIdx}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 50);
-          };
-          a.addEventListener('click', handler);
-          a.addEventListener('keydown', ev => { if (ev.key === 'Enter') handler(); });
-          wrap.appendChild(a);
+            <span class="search-badge ${di === 0 ? 'day1' : 'day2'}">${escHtml(day.label)}</span>`;
+          const go = () => { switchDay(di); closeSearch(); };
+          el.addEventListener('click', go);
+          el.addEventListener('keydown', ev => { if (ev.key === 'Enter') go(); });
+          wrap.appendChild(el);
         });
       }
 
       if (tipHits.length) {
-        const label = document.createElement('p');
-        label.className = 'search-section-label';
-        label.textContent = '안내';
-        wrap.appendChild(label);
-
-        tipHits.forEach(tip => {
-          const div = document.createElement('div');
-          div.className = 'search-result-item';
-          div.innerHTML = `
+        const lbl = document.createElement('p');
+        lbl.className = 'search-section-label';
+        lbl.textContent = '안내';
+        wrap.appendChild(lbl);
+        tipHits.forEach(t => {
+          const el = document.createElement('div');
+          el.className = 'search-result-item';
+          el.innerHTML = `
             <div class="search-result-meta">
-              <span class="search-result-title">${escHtml(tip.title)}</span>
-              <span class="search-result-desc">${escHtml(tip.desc)}</span>
+              <span class="search-result-title">${escHtml(t.title)}</span>
+              <span class="search-result-desc">${escHtml(t.desc)}</span>
             </div>
             <span class="search-badge tip">안내</span>`;
-          wrap.appendChild(div);
+          wrap.appendChild(el);
         });
       }
 
-      searchResults.innerHTML = '';
-      searchResults.appendChild(wrap);
+      results.innerHTML = '';
+      results.appendChild(wrap);
     }
 
   })();
