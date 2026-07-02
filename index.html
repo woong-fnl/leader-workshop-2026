@@ -79,7 +79,7 @@
                onerror="this.hidden=true;this.nextElementSibling.hidden=false">
           <span class="hero-logo-mobile-text" hidden>에프앤엘</span>
         </div>
-        <p class="hero-kicker">FNL Leadership Workshop</p>
+        <p class="hero-kicker">F&amp;L Leadership Workshop</p>
         <h1 class="hero-title" id="hero-title"></h1>
         <p class="hero-subtitle" id="hero-subtitle"></p>
         <div class="hero-chips">
@@ -203,11 +203,12 @@
 
     /* ── 탭 정의 ─────────────────────────────────────────── */
     const TABS = [
+      { id:'briefing',      label:'사전안내', sub:'준비 안내',          icon:'clipboard'  },
       { id:'day-0',         label:'Day 1',   sub: EVENT.days[0].date, icon:'calendar'   },
       { id:'day-1',         label:'Day 2',   sub: EVENT.days[1].date, icon:'calendar'   },
-      { id:'activities',    label:'즐길거리', sub:'&식사',             icon:'star'       },
-      { id:'attendees',     label:'참석자',  sub:'참석자 정보',        icon:'users'      },
-      { id:'accommodation', label:'숙소',    sub:'포유포레',           icon:'building'   },
+      { id:'activities',    label:'즐길거리', sub:'&식사',              icon:'star'       },
+      { id:'attendees',     label:'참석자',  sub:'참석자 정보',         icon:'users'      },
+      { id:'accommodation', label:'숙소',    sub:'포유포레',            icon:'building'   },
     ];
 
     function tabIcon(icon, size) {
@@ -235,11 +236,17 @@
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
       </svg>`;
+      if (icon === 'clipboard') return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+        <rect x="8" y="2" width="8" height="4" rx="1"/>
+        <line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="15" y2="16"/>
+      </svg>`;
       return '';
     }
 
     /* ── 사이드바 & 모바일 탭 렌더링 ────────────────────── */
-    let activeTab = 'day-0';
+    let activeTab = 'briefing';
     const sidebarNav = $('sidebar-tabs');
     const mobileNav  = $('mobile-tabs');
     const panelWrap  = $('panels');
@@ -317,9 +324,6 @@
     // 이전 버전 호환 (검색 결과 클릭 시 사용)
     function switchDay(idx) { switchTab(`day-${idx}`); }
 
-    /* ════════════════════════════════════════════════════════
-       패널 1·2 — Day 타임라인
-       ════════════════════════════════════════════════════════ */
     const PIN_SVG = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
       stroke-linejoin="round" aria-hidden="true">
@@ -330,6 +334,97 @@
       keynote:'is-keynote', activity:'is-activity',
       networking:'is-networking', break:'is-break', move:'is-move',
     };
+
+    /* ════════════════════════════════════════════════════════
+       패널 0 — 사전안내
+       ════════════════════════════════════════════════════════ */
+    (function buildBriefingPanel() {
+      const bf = EVENT.briefing;
+      const panel = document.createElement('div');
+      panel.className = 'main-panel is-active';
+      panel.id = 'panel-briefing';
+      panel.setAttribute('role', 'tabpanel');
+
+      const inner = document.createElement('div');
+      inner.className = 'panel-inner';
+      inner.innerHTML = `<div class="panel-heading">
+        <span class="panel-heading-label">사전안내</span>
+        <span class="panel-heading-sub">준비 안내</span>
+      </div>`;
+
+      // 집합 안내 카드
+      const mp = bf.meetingPoint;
+      const meetCard = document.createElement('div');
+      meetCard.className = 'briefing-meeting-card';
+      meetCard.innerHTML = `
+        <span class="briefing-meeting-label">집합 장소</span>
+        <p class="briefing-meeting-name">${escHtml(mp.location)}</p>
+        <p class="briefing-meeting-time">${escHtml(mp.date)} &nbsp;·&nbsp; ${escHtml(mp.time)}</p>
+        ${mp.note ? `<p class="briefing-meeting-note">${escHtml(mp.note)}</p>` : ''}
+        ${mp.locationUrl ? `<a class="briefing-meeting-link" href="${escAttr(mp.locationUrl)}"
+          target="_blank" rel="noopener">
+          ${PIN_SVG} 지도에서 보기
+        </a>` : ''}`;
+      inner.appendChild(meetCard);
+
+      // 복장 안내
+      if (bf.attire) {
+        const attireDiv = document.createElement('div');
+        attireDiv.className = 'briefing-attire';
+        attireDiv.innerHTML = `<i class="ti ti-shirt" aria-hidden="true"></i>
+          <span><strong>복장 안내:</strong> ${escHtml(bf.attire)}</span>`;
+        inner.appendChild(attireDiv);
+      }
+
+      // 준비물 체크리스트
+      if (bf.checklist && bf.checklist.length) {
+        const section = document.createElement('div');
+        section.className = 'briefing-section';
+        section.innerHTML = `<p class="briefing-section-title">준비물 체크리스트</p>`;
+        const cats = document.createElement('div');
+        cats.className = 'briefing-categories';
+        bf.checklist.forEach(cat => {
+          const card = document.createElement('div');
+          card.className = 'briefing-cat-card';
+          const itemsHtml = cat.items.map(it =>
+            `<div class="briefing-item">${escHtml(it)}</div>`
+          ).join('');
+          card.innerHTML = `<div class="briefing-cat-hd">
+            <span class="briefing-cat-emoji" aria-hidden="true">${escHtml(cat.emoji)}</span>
+            ${escHtml(cat.category)}
+          </div>
+          <div class="briefing-items">${itemsHtml}</div>`;
+          cats.appendChild(card);
+        });
+        section.appendChild(cats);
+        inner.appendChild(section);
+      }
+
+      // 안내사항
+      if (bf.notes && bf.notes.length) {
+        const section = document.createElement('div');
+        section.className = 'briefing-section';
+        section.innerHTML = `<p class="briefing-section-title">안내사항</p>`;
+        const noteList = document.createElement('div');
+        noteList.className = 'briefing-notes-list';
+        bf.notes.forEach(n => {
+          const item = document.createElement('div');
+          item.className = 'briefing-note-item';
+          item.innerHTML = `<i class="ti ti-info-circle" aria-hidden="true"></i>
+            <span>${escHtml(n)}</span>`;
+          noteList.appendChild(item);
+        });
+        section.appendChild(noteList);
+        inner.appendChild(section);
+      }
+
+      panel.appendChild(inner);
+      panelWrap.appendChild(panel);
+    })();
+
+    /* ════════════════════════════════════════════════════════
+       패널 1·2 — Day 타임라인
+       ════════════════════════════════════════════════════════ */
 
     function buildTimeline(items) {
       const track = document.createElement('div');
@@ -416,7 +511,7 @@
 
     EVENT.days.forEach((day, i) => {
       const panel = document.createElement('div');
-      panel.className = 'main-panel' + (i === 0 ? ' is-active' : '');
+      panel.className = 'main-panel';
       panel.id = `panel-day-${i}`;
       panel.setAttribute('role', 'tabpanel');
       panel.setAttribute('aria-labelledby', `sb-tab-day-${i}`);
