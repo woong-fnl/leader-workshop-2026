@@ -776,7 +776,8 @@
       const headHtml = `<div class="panel-heading">
         <span class="panel-heading-label">참석자</span>
         <span class="panel-heading-sub">${escHtml(String(EVENT.attendees.length))}명</span>
-      </div>`;
+      </div>
+      <p class="att-tip"><i class="ti ti-phone-call" aria-hidden="true"></i> 카드를 탭하면 연락처를 확인하고 바로 전화할 수 있어요.</p>`;
 
       const grid = document.createElement('div');
       grid.className = 'attendee-grid';
