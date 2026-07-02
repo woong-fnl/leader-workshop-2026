@@ -1248,6 +1248,19 @@ a.tl-dm-loc:hover { color:var(--gold); }
 .act-card-note {
   font-size:.75rem; color:var(--text-muted); margin-top:.3rem; font-style:italic;
 }
+.act-card-caution {
+  display:flex; flex-wrap:wrap; gap:.35rem; align-items:flex-start;
+  margin-top:.6rem; padding:.6rem .75rem;
+  background:rgba(255,160,0,.10); border:1px solid rgba(255,160,0,.28);
+  border-radius:8px;
+}
+.act-caution-icon { font-size:.85rem; flex-shrink:0; margin-top:.05rem; }
+.act-caution-text { font-size:.75rem; color:#7A5500; line-height:1.55; flex:1 1 0; min-width:0; }
+.act-caution-link {
+  font-size:.72rem; font-weight:700; color:#7A5500;
+  text-decoration:underline; white-space:nowrap; align-self:flex-end;
+}
+.act-caution-link:hover { color:var(--gold); }
 .act-card-footer { display:flex; justify-content:flex-end; margin-top:.8rem; }
 .act-tl-btn {
   font-size:.7rem; font-weight:700; color:var(--navy-deep);

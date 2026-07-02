@@ -712,8 +712,13 @@
           </div>
           <p class="act-card-title">${escHtml(act.title)}</p>
           ${locHtml}
-          ${act.desc ? `<p class="act-card-desc">${escHtml(act.desc)}</p>` : ''}
-          ${act.note ? `<p class="act-card-note">${escHtml(act.note)}</p>` : ''}`;
+          ${act.desc ? `<p class="act-card-desc">${escHtml(act.desc).replace(/\n/g,'<br>')}</p>` : ''}
+          ${act.note ? `<p class="act-card-note">${escHtml(act.note)}</p>` : ''}
+          ${act.caution ? `<div class="act-card-caution">
+            <span class="act-caution-icon">☀️</span>
+            <span class="act-caution-text">${escHtml(act.caution.text)}</span>
+            ${act.caution.linkUrl ? `<a class="act-caution-link" href="${escAttr(act.caution.linkUrl)}" target="_blank" rel="noopener noreferrer">${escHtml(act.caution.linkLabel)} →</a>` : ''}
+          </div>` : ''}`;
 
         // 타임라인 이동 버튼
         const footer = document.createElement('div');
