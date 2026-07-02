@@ -686,6 +686,12 @@
     }
 
     (function buildAttendeePanel() {
+      // 이름 → 객실번호 룩업
+      const roomMap = {};
+      (EVENT.accommodation.rooms || []).forEach(r => {
+        r.occupants.forEach(name => { roomMap[name] = r.room; });
+      });
+
       const panel = document.createElement('div');
       panel.className = 'main-panel';
       panel.id = 'panel-attendees';
@@ -711,12 +717,14 @@
           ? `${escHtml(a.division)}<br>${escHtml(a.team)}`
           : `${escHtml(a.division)}`;
 
+        const roomNum = roomMap[a.name];
         card.innerHTML = `
           <div class="attendee-avatar" style="--avatar-color:${avatarColor(a.title)}">${escHtml(givenName)}</div>
           <div class="attendee-info">
             <span class="attendee-name">${escHtml(a.name)}</span>
             <span class="attendee-badge ${badgeClass(a.title)}">${escHtml(a.title)}</span>
             <span class="attendee-meta">${teamLine}</span>
+            ${roomNum ? `<span class="attendee-room"><i class="ti ti-door" aria-hidden="true"></i>${escHtml(roomNum)}</span>` : ''}
           </div>`;
         grid.appendChild(card);
       });
@@ -910,7 +918,12 @@
           const card = document.createElement('div');
           card.className = 'room-card';
           const occupantsHtml = r.occupants.map(o => `<span class="room-person">${escHtml(o)}</span>`).join('');
-          card.innerHTML = `<p class="room-name">${escHtml(r.room)}</p>
+          card.innerHTML = `
+            <div class="room-header">
+              <p class="room-name">${escHtml(r.room)}</p>
+              ${r.note ? `<span class="room-note-badge">${escHtml(r.note)}</span>` : ''}
+            </div>
+            ${r.type ? `<p class="room-type">${escHtml(r.type)}</p>` : ''}
             <div class="room-occupants">${occupantsHtml}</div>`;
           grid.appendChild(card);
         });

@@ -27,17 +27,17 @@ const EVENT = {
     { name: "이종국", title: "Group Leader", division: "Global Sales Group",   team: "Global Sales Group" },
     { name: "마준성", title: "Team Leader",  division: "Global Sales Group",   team: "SEA Team" },
     { name: "김준범", title: "Team Leader",  division: "Global Marketing Group",team: "JP Team" },
-    { name: "손은호", title: "Team Leader",  division: "CEO Direct(2400)",     team: "FA Team" },
-    { name: "김성수", title: "Team Leader",  division: "CEO Direct(2400)",     team: "HR&GA Team" },
-    { name: "강수지", title: "Team Leader",  division: "CEO Direct(2400)",     team: "CEO Staff" },
-    { name: "오주은", title: "Team Leader",  division: "CEO Direct(2500)",     team: "Design Team" },
-    { name: "이성필", title: "Team Leader",  division: "CEO Direct(2500)",     team: "Redence Marketing Team" },
-    { name: "김수인", title: "Team Leader",  division: "CEO Direct(2500)",     team: "Influencer Team" },
-    { name: "김재환", title: "Part Leader",  division: "CEO Direct(2500)",     team: "F&B Part" },
-    { name: "송유진", title: "Part Leader",  division: "CEO Direct(2500)",     team: "Beauty Part" },
-    { name: "황대로", title: "Staff",        division: "CEO Direct(2400)",     team: "HR&GA Team" },
-    { name: "조원웅", title: "Staff",        division: "CEO Direct(2400)",     team: "HR&GA Team" },
-    { name: "김지민", title: "Staff",        division: "CEO Direct(2400)",     team: "HR&GA Team" },
+    { name: "손은호", title: "Team Leader",  division: "CEO Direct",     team: "FA Team" },
+    { name: "김성수", title: "Team Leader",  division: "CEO Direct",     team: "HR&GA Team" },
+    { name: "강수지", title: "Team Leader",  division: "CEO Direct",     team: "CEO Staff" },
+    { name: "오주은", title: "Team Leader",  division: "CEO Direct",     team: "Design Team" },
+    { name: "이성필", title: "Team Leader",  division: "CEO Direct",     team: "Redence Marketing Team" },
+    { name: "김수인", title: "Team Leader",  division: "CEO Direct",     team: "Influencer Team" },
+    { name: "김재환", title: "Part Leader",  division: "CEO Direct",     team: "F&B Part" },
+    { name: "송유진", title: "Part Leader",  division: "CEO Direct",     team: "Beauty Part" },
+    { name: "황대로", title: "Staff",        division: "CEO Direct",     team: "HR&GA Team" },
+    { name: "조원웅", title: "Staff",        division: "CEO Direct",     team: "HR&GA Team" },
+    { name: "김지민", title: "Staff",        division: "CEO Direct",     team: "HR&GA Team" },
   ],
 
   // ── 숙소 정보 (포유포레) ──────────────────────────────────
@@ -51,10 +51,18 @@ const EVENT = {
       { ssid: "입력 예정", password: "입력 예정", note: "현장 도착 후 안내드립니다." },
     ],
 
-    // 방배정 (입력 예정)
-    // { room: '201호', occupants: ['이름', '이름'] } 형식으로 추가
+    // 방배정
+    // { room, type, occupants, note }
     rooms: [
-      // { room: "201호", occupants: ["이상훈", "정이한"] },
+      { room: "201호", type: "온돌룸",                      occupants: ["이상훈"],                                         note: "" },
+      { room: "202호", type: "베드룸(퀸1) · 복층 · 화장실", occupants: ["황대로", "조원웅", "김지민", "김성수"],            note: "Staff" },
+      { room: "301호", type: "베드룸(퀸1+싱글1)",           occupants: ["정이한", "손은호"],                               note: "" },
+      { room: "302호", type: "온돌룸 · 주방시설",           occupants: ["이동주"],                                         note: "" },
+      { room: "303호", type: "베드룸(퀸1+싱글1) · 화장실",  occupants: ["마준성", "이성필"],                               note: "" },
+      { room: "304호", type: "온돌룸",                      occupants: ["김재환", "김준범"],                               note: "중문으로 구분" },
+      { room: "305호", type: "베드룸(퀸1) · 화장실",        occupants: ["이종국"],                                         note: "중문으로 구분" },
+      { room: "401호", type: "베드룸(퀸1)",                 occupants: ["한송희"],                                         note: "여자 숙소 (남자 출입 금지)" },
+      { room: "402호", type: "베드룸(퀸1+싱글1)",           occupants: ["유아진", "강수지", "오주은", "김수인", "송유진"],  note: "여자 숙소 (남자 출입 금지)" },
     ],
 
     // 층별 시설 안내
