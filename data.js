@@ -102,7 +102,7 @@ const EVENT = {
     // 흡연구역 { spot, desc, images[] } — images: images/facilities/ 폴더에 넣어주세요
     smokingAreas: [
       { spot: "Spot 1", desc: "2층 야외정원 건물 뒤편에 있어요",                                                                    images: [] },
-      { spot: "Spot 2", desc: "외부현관에서 바로 들어가거나, 주차장에 있는 문을 통해 갈 수 있어요.", images: ["smoking-spot2.jpg", "smoking-spot2_1.jpg"] },
+      { spot: "Spot 2", desc: "외부현관에서 바로 들어가거나, 주차장에 있는 문을 통해 갈 수 있어요.", images: ["smoking-spot2.png", "smoking-spot2_1.png"] },
     ],
 
     // Day 2 조식 안내

@@ -1216,15 +1216,14 @@
     }
     $('tl-detail-bd').addEventListener('click', closeTlModal);
     $('tl-detail-close').addEventListener('click', closeTlModal);
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeAttModal(); closeTlModal(); closeFacModal(); } });
-
     openBtn.addEventListener('click', openSearch);
     closeBtn.addEventListener('click', closeSearch);
-    document.addEventListener('keydown', ev => {
-      if (ev.key === 'Escape') {
-        if ($('fac-modal').classList.contains('is-open')) { closeFacModal(); return; }
-        if (overlay.classList.contains('is-open')) closeSearch();
-      }
+    document.addEventListener('keydown', e => {
+      if (e.key !== 'Escape') return;
+      if ($('att-modal').classList.contains('is-open'))        { closeAttModal(); return; }
+      if ($('tl-detail-modal').classList.contains('is-open'))  { closeTlModal();  return; }
+      if ($('fac-modal').classList.contains('is-open'))        { closeFacModal(); return; }
+      if (overlay.classList.contains('is-open'))               { closeSearch();   return; }
     });
 
     let debounce;
@@ -1337,7 +1336,13 @@
               <span class="search-result-desc">${escHtml(meta)}</span>
             </div>
             <span class="search-badge attendee">${escHtml(a.title)}</span>`;
-          const go = () => { switchTab('attendees'); closeSearch(); };
+          const go = () => {
+            const roomEntry = (EVENT.accommodation.rooms || []).find(r => r.occupants.includes(a.name));
+            const roomNum = roomEntry ? roomEntry.room : '';
+            closeSearch();
+            switchTab('attendees');
+            setTimeout(() => openAttModal(a, roomNum), 80);
+          };
           el.addEventListener('click', go);
           el.addEventListener('keydown', ev => { if (ev.key === 'Enter') go(); });
           wrap.appendChild(el);
