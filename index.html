@@ -871,6 +871,7 @@
        ════════════════════════════════════════════════════════ */
     const ACC_SUBTABS = [
       { id:'facilities', label:'시설안내'  },
+      { id:'doorcode',   label:'도어록'    },
       { id:'smoking',    label:'흡연구역'  },
       { id:'wifi',       label:'와이파이'  },
       { id:'rooms',      label:'방배정'    },
@@ -970,6 +971,19 @@
 
       inner.appendChild(facPanel);
 
+      // ─ 서브패널: 도어록 ─
+      const doorcodePanel = document.createElement('div');
+      doorcodePanel.className = 'acc-subpanel';
+      doorcodePanel.dataset.panel = 'doorcode';
+      if (acc.doorCode) {
+        const doorCard = document.createElement('div');
+        doorCard.className = 'wifi-card';
+        doorCard.innerHTML = `<p class="wifi-card-title"><i class="ti ti-lock" aria-hidden="true"></i> 도어록 비밀번호</p>` +
+          copyRow('비밀번호', acc.doorCode);
+        doorcodePanel.appendChild(doorCard);
+      }
+      inner.appendChild(doorcodePanel);
+
       // ─ 서브패널: 흡연구역 ─
       const smokingPanel = document.createElement('div');
       smokingPanel.className = 'acc-subpanel';
@@ -1035,22 +1049,12 @@
         </div>`;
       }
 
-      if (acc.doorCode) {
-        const doorCard = document.createElement('div');
-        doorCard.className = 'wifi-card';
-        doorCard.innerHTML = `<p class="wifi-card-title"><i class="ti ti-lock" aria-hidden="true"></i> 도어록 비밀번호</p>` +
-          copyRow('비밀번호', acc.doorCode);
-        wifiPanel.appendChild(doorCard);
-      }
-
       if (acc.wifi && acc.wifi.length) {
         acc.wifi.forEach(w => {
           const card = document.createElement('div');
           card.className = 'wifi-card';
           card.innerHTML = `<p class="wifi-card-title"><i class="ti ti-wifi" aria-hidden="true"></i> Wi-Fi</p>` +
-            copyRow('네트워크 이름 (SSID)', w.ssid) +
-            copyRow('비밀번호', w.password) +
-            (w.note ? `<p class="wifi-note">${escHtml(w.note)}</p>` : '');
+            copyRow('비밀번호', w.password);
           wifiPanel.appendChild(card);
         });
       } else {
