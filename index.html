@@ -158,6 +158,20 @@
     </div>
   </div>
 
+  <!-- ══ 자리배치도 모달 ══════════════════════════════════════ -->
+  <div class="seat-modal" id="seat-modal" role="dialog" aria-modal="true" aria-label="자리배치도">
+    <div class="seat-modal-bd" id="seat-modal-bd"></div>
+    <div class="seat-modal-sheet">
+      <div class="seat-modal-header">
+        <span class="seat-modal-title">자리배치도</span>
+        <button class="seat-modal-close" id="seat-modal-close" aria-label="닫기">
+          <i class="ti ti-x" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="seat-modal-img-wrap" id="seat-modal-img-wrap"></div>
+    </div>
+  </div>
+
   <!-- ══ 시설 상세 모달 ════════════════════════════════════════ -->
   <div class="fac-modal" id="fac-modal" role="dialog" aria-modal="true" aria-label="시설 상세">
     <div class="fac-modal-bd" id="fac-modal-bd"></div>
@@ -1213,6 +1227,13 @@
         btn.onclick = () => { closeTlModal(); switchToAccTab(item.accTabId); };
         actions.appendChild(btn);
       }
+      if (item.type === 'keynote' && EVENT.seatingChart && EVENT.seatingChart.image) {
+        const btn = document.createElement('button');
+        btn.className = 'tl-dm-btn tl-dm-btn--seat';
+        btn.innerHTML = `<i class="ti ti-layout-rows" aria-hidden="true"></i> 자리배치도 확인`;
+        btn.onclick = () => { closeTlModal(); openSeatModal(); };
+        actions.appendChild(btn);
+      }
 
       modal.classList.add('is-open');
       document.body.style.overflow = 'hidden';
@@ -1223,14 +1244,36 @@
     }
     $('tl-detail-bd').addEventListener('click', closeTlModal);
     $('tl-detail-close').addEventListener('click', closeTlModal);
+
+    /* ── 자리배치도 모달 ─────────────────────────────────────── */
+    function openSeatModal() {
+      const wrap = $('seat-modal-img-wrap');
+      wrap.innerHTML = '';
+      if (EVENT.seatingChart && EVENT.seatingChart.image) {
+        const img = document.createElement('img');
+        img.src = `images/${escAttr(EVENT.seatingChart.image)}`;
+        img.alt = '자리배치도';
+        img.className = 'seat-modal-img';
+        wrap.appendChild(img);
+      }
+      $('seat-modal').classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeSeatModal() {
+      $('seat-modal').classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+    $('seat-modal-bd').addEventListener('click', closeSeatModal);
+    $('seat-modal-close').addEventListener('click', closeSeatModal);
     openBtn.addEventListener('click', openSearch);
     closeBtn.addEventListener('click', closeSearch);
     document.addEventListener('keydown', e => {
       if (e.key !== 'Escape') return;
-      if ($('att-modal').classList.contains('is-open'))        { closeAttModal(); return; }
-      if ($('tl-detail-modal').classList.contains('is-open'))  { closeTlModal();  return; }
-      if ($('fac-modal').classList.contains('is-open'))        { closeFacModal(); return; }
-      if (overlay.classList.contains('is-open'))               { closeSearch();   return; }
+      if ($('att-modal').classList.contains('is-open'))        { closeAttModal();  return; }
+      if ($('tl-detail-modal').classList.contains('is-open'))  { closeTlModal();   return; }
+      if ($('seat-modal').classList.contains('is-open'))       { closeSeatModal(); return; }
+      if ($('fac-modal').classList.contains('is-open'))        { closeFacModal();  return; }
+      if (overlay.classList.contains('is-open'))               { closeSearch();    return; }
     });
 
     let debounce;
