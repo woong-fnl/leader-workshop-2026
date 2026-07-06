@@ -1004,29 +1004,36 @@
       wifiPanel.className = 'acc-subpanel';
       wifiPanel.dataset.panel = 'wifi';
 
+      function copyRow(label, value) {
+        const btnId = `copy-${label.replace(/\s/g,'')}`;
+        return `<div class="wifi-row">
+          <span class="wifi-label">${escHtml(label)}</span>
+          <span class="wifi-value" id="v-${btnId}">
+            <span>${escHtml(value)}</span>
+            <button class="wifi-copy-btn" id="${escAttr(btnId)}"
+              onclick="(function(btn,val){
+                navigator.clipboard.writeText(val).then(()=>{
+                  btn.textContent='복사됨!';
+                  setTimeout(()=>btn.textContent='복사',2000);
+                }).catch(()=>{});
+              })(this,'${escAttr(value)}')" aria-label="${escHtml(label)} 복사">복사</button>
+          </span>
+        </div>`;
+      }
+
+      if (acc.doorCode) {
+        const doorCard = document.createElement('div');
+        doorCard.className = 'wifi-card';
+        doorCard.innerHTML = `<p class="wifi-card-title"><i class="ti ti-lock" aria-hidden="true"></i> 도어록 비밀번호</p>` +
+          copyRow('비밀번호', acc.doorCode);
+        wifiPanel.appendChild(doorCard);
+      }
+
       if (acc.wifi && acc.wifi.length) {
         acc.wifi.forEach(w => {
           const card = document.createElement('div');
           card.className = 'wifi-card';
-
-          function copyRow(label, value) {
-            const btnId = `copy-${label.replace(/\s/g,'')}`;
-            return `<div class="wifi-row">
-              <span class="wifi-label">${escHtml(label)}</span>
-              <span class="wifi-value" id="v-${btnId}">
-                <span>${escHtml(value)}</span>
-                <button class="wifi-copy-btn" id="${escAttr(btnId)}"
-                  onclick="(function(btn,val){
-                    navigator.clipboard.writeText(val).then(()=>{
-                      btn.textContent='복사됨!';
-                      setTimeout(()=>btn.textContent='복사',2000);
-                    }).catch(()=>{});
-                  })(this,'${escAttr(value)}')" aria-label="${escHtml(label)} 복사">복사</button>
-              </span>
-            </div>`;
-          }
-
-          card.innerHTML =
+          card.innerHTML = `<p class="wifi-card-title"><i class="ti ti-wifi" aria-hidden="true"></i> Wi-Fi</p>` +
             copyRow('네트워크 이름 (SSID)', w.ssid) +
             copyRow('비밀번호', w.password) +
             (w.note ? `<p class="wifi-note">${escHtml(w.note)}</p>` : '');
