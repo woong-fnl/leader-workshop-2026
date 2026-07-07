@@ -129,6 +129,7 @@ const EVENT = {
     {
       label: "Day 1",
       date:  "7월 9일 (목)",
+      isoDate: "2026-07-09",
       items: [
         { time:"09:00 – 09:30", title:"집합",                         desc:"",                                                                                                                                                                                                                                                              note:"",                            location:"생각공장 당산 미팅룸 E",   locationUrl:"https://map.naver.com/v5/search/%EC%83%9D%EA%B0%81%EA%B3%B5%EC%9E%A5%20%EB%8B%B9%EC%82%B0", type:"session" },
         { time:"09:30 – 11:00", title:"이동",                         desc:"생각공장 당산 → 가평레저카트장",                                                                                                                                                                                                                               note:"버스",                        location:"",                          locationUrl:"",                                                                                            type:"move" },
@@ -148,6 +149,7 @@ const EVENT = {
     {
       label: "Day 2",
       date:  "7월 10일 (금)",
+      isoDate: "2026-07-10",
       items: [
         { time:"08:00 – 09:00", title:"조식 및 산책",    desc:"자유로운 아침 식사 후 가볍게 산책",               accTabId:"breakfast",                 note:"자율",      location:"포유포레", locationUrl:"https://map.naver.com/v5/search/%ED%8F%AC%EC%9C%A0%ED%8F%AC%EB%A0%88", type:"break" },
         { time:"09:00 – 10:30", title:"개인정비",         desc:"퇴실 준비 및 짐 정리",            note:"",          location:"",         locationUrl:"",                                                                     type:"break" },

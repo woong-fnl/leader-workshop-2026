@@ -404,6 +404,92 @@
         <span class="panel-heading-sub">준비 안내</span>
       </div>`;
 
+      // ── 오늘 기준 NOW 카드 ──
+      const todayKey = () => {
+        const d = new Date(), p = n => String(n).padStart(2, '0');
+        return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+      };
+      const DAY1_ISO = EVENT.days[0].isoDate;
+      const DAY2_ISO = EVENT.days[EVENT.days.length - 1].isoDate;
+      const isWorkshopStarted = todayKey() >= DAY1_ISO;
+
+      const nowWrap = document.createElement('div');
+      nowWrap.id = 'now-card-wrap';
+      inner.appendChild(nowWrap);
+
+      function renderNowCard() {
+        nowWrap.innerHTML = '';
+        const key = todayKey();
+        const card = document.createElement('div');
+        card.className = 'now-card';
+        const di = EVENT.days.findIndex(d => d.isoDate === key);
+
+        if (di === -1 && key < DAY1_ISO) {
+          const diff = Math.round((new Date(DAY1_ISO) - new Date(key)) / 86400000);
+          const mp2 = EVENT.briefing.meetingPoint;
+          card.innerHTML = `
+            <span class="now-badge">D-${diff}</span>
+            <p class="now-title">워크숍이 ${diff}일 남았어요</p>
+            <p class="now-sub">${escHtml(mp2.date)} ${escHtml(mp2.time)} · ${escHtml(mp2.location)} 집합</p>`;
+        } else if (di === -1) {
+          card.classList.add('is-done');
+          card.innerHTML = `
+            <p class="now-title">워크숍이 마무리됐어요 🙌</p>
+            <p class="now-sub">이틀간 고생 많으셨어요. 함께해 주셔서 감사합니다!</p>`;
+        } else {
+          const day = EVENT.days[di];
+          const now = new Date();
+          const mins = now.getHours() * 60 + now.getMinutes();
+          const parse = t => {
+            const m = [...t.matchAll(/(\d{1,2}):(\d{2})/g)].map(x => +x[1] * 60 + +x[2]);
+            return { start: m[0] ?? 0, end: m[1] ?? (m[0] ?? 0) + 30 };
+          };
+          const cur = day.items.find(it => { const p = parse(it.time); return p.start <= mins && mins < p.end; });
+          const nxt = day.items.find(it => parse(it.time).start > mins);
+
+          card.innerHTML = `
+            <span class="now-badge">${escHtml(day.label)}</span>
+            <p class="now-title">${escHtml(day.date)}</p>`;
+
+          const list = document.createElement('div');
+          list.className = 'now-items';
+          const addRow = (chip, cls, item) => {
+            const row = document.createElement('div');
+            row.className = 'now-item';
+            row.setAttribute('role', 'button');
+            row.setAttribute('tabindex', '0');
+            row.innerHTML = `
+              <span class="now-item-chip ${cls}">${chip}</span>
+              <span class="now-item-title">${escHtml(item.title)}</span>
+              <span class="now-item-time">${escHtml(item.time)}</span>`;
+            const go = () => openTlModal(item);
+            row.addEventListener('click', go);
+            row.addEventListener('keydown', ev => { if (ev.key === 'Enter') go(); });
+            list.appendChild(row);
+          };
+          if (cur) addRow('지금', 'is-now', cur);
+          if (nxt) addRow('다음', 'is-next', nxt);
+          if (!cur && !nxt) {
+            const doneMsg = document.createElement('p');
+            doneMsg.className = 'now-sub';
+            doneMsg.textContent = mins < parse(day.items[0].time).start
+              ? '오늘 일정이 아직 시작 전이에요.'
+              : '오늘 일정이 모두 끝났어요. 고생하셨어요!';
+            list.appendChild(doneMsg);
+          }
+          card.appendChild(list);
+
+          const link = document.createElement('button');
+          link.className = 'now-day-link';
+          link.innerHTML = `${escHtml(day.label)} 전체 일정 보기 <i class="ti ti-arrow-right" aria-hidden="true"></i>`;
+          link.addEventListener('click', () => switchDay(di));
+          card.appendChild(link);
+        }
+        nowWrap.appendChild(card);
+      }
+      renderNowCard();
+      setInterval(renderNowCard, 60000);
+
       // 집합 안내 카드
       const mp = bf.meetingPoint;
       const meetCard = document.createElement('div');
@@ -419,11 +505,30 @@
         </a>` : ''}`;
       inner.appendChild(meetCard);
 
-      // 준비물 체크리스트
-      if (bf.checklist && bf.checklist.length) {
+      // 토글 섹션 빌더
+      function collapsibleSection(title, bodyEl, startOpen) {
         const section = document.createElement('div');
-        section.className = 'briefing-section';
-        section.innerHTML = `<p class="briefing-section-title">준비물</p>`;
+        section.className = 'briefing-section is-collapsible' + (startOpen ? ' is-open' : '');
+        const head = document.createElement('button');
+        head.type = 'button';
+        head.className = 'briefing-section-toggle';
+        head.setAttribute('aria-expanded', String(!!startOpen));
+        head.innerHTML = `<span class="briefing-section-title">${escHtml(title)}</span>
+          <i class="ti ti-chevron-down" aria-hidden="true"></i>`;
+        head.addEventListener('click', () => {
+          const open = section.classList.toggle('is-open');
+          head.setAttribute('aria-expanded', String(open));
+        });
+        const body = document.createElement('div');
+        body.className = 'briefing-section-body';
+        body.appendChild(bodyEl);
+        section.appendChild(head);
+        section.appendChild(body);
+        return section;
+      }
+
+      // 준비물 체크리스트 (워크숍 시작 후엔 기본 접힘)
+      if (bf.checklist && bf.checklist.length) {
         const prepList = document.createElement('div');
         prepList.className = 'prep-list';
         bf.checklist.forEach(item => {
@@ -448,15 +553,11 @@
           }
           prepList.appendChild(card);
         });
-        section.appendChild(prepList);
-        inner.appendChild(section);
+        inner.appendChild(collapsibleSection('준비물', prepList, !isWorkshopStarted));
       }
 
       // 안내사항
       if (bf.notes && bf.notes.length) {
-        const section = document.createElement('div');
-        section.className = 'briefing-section';
-        section.innerHTML = `<p class="briefing-section-title">안내사항</p>`;
         const noteList = document.createElement('div');
         noteList.className = 'briefing-notes-list';
         bf.notes.forEach(n => {
@@ -466,8 +567,7 @@
             <span>${escHtml(n)}</span>`;
           noteList.appendChild(item);
         });
-        section.appendChild(noteList);
-        inner.appendChild(section);
+        inner.appendChild(collapsibleSection('안내사항', noteList, true));
       }
 
       panel.appendChild(inner);
