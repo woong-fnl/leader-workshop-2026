@@ -936,14 +936,14 @@
        ════════════════════════════════════════════════════════ */
     function avatarColor(title) {
       if (title === 'CEO')                                      return '#C5A55A';
-      if (title === 'Group Leader' || title === 'Center Leader') return '#3A7BD5';
+      if (title === 'Group Leader' || title === 'CSO' || title === 'Center Leader') return '#3A7BD5';
       if (title === 'Team Leader')                              return '#4A6FA5';
       if (title === 'Part Leader')                              return '#2E8B5A';
       return '#8A9BAD';
     }
     function badgeClass(title) {
       if (title === 'CEO')            return 'badge-ceo';
-      if (title === 'Group Leader')   return 'badge-group';
+      if (title === 'Group Leader' || title === 'CSO') return 'badge-group';
       if (title === 'Center Leader')  return 'badge-center';
       if (title === 'Team Leader')    return 'badge-team';
       if (title === 'Part Leader')    return 'badge-part';
@@ -957,7 +957,7 @@
       });
 
       // 직책 정렬 순서
-      const TITLE_ORDER = { 'CEO': 0, 'Group Leader': 1, 'Center Leader': 2, 'Team Leader': 3, 'Part Leader': 4, 'Staff': 5 };
+      const TITLE_ORDER = { 'CEO': 0, 'Group Leader': 1, 'CSO': 1, 'Center Leader': 2, 'Team Leader': 3, 'Part Leader': 4, 'Staff': 5 };
       const sorted = [...EVENT.attendees].sort((a, b) => (TITLE_ORDER[a.title] ?? 9) - (TITLE_ORDER[b.title] ?? 9));
 
       const panel = document.createElement('div');
