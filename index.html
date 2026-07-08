@@ -35,7 +35,7 @@
 
   <!-- ══ 사이드바 (데스크탑) ══════════════════════════════════ -->
   <aside class="sidebar" aria-label="내비게이션">
-    <a class="sidebar-logo" href="#top" aria-label="홈">
+    <a class="sidebar-logo" href="#" aria-label="홈 — NOW 보기">
       <img src="images/logo.png" alt="에프앤엘" class="sidebar-logo-img"
            onerror="this.hidden=true;this.nextElementSibling.hidden=false">
       <span class="sidebar-logo-text" hidden>에프앤엘</span>
@@ -74,7 +74,7 @@
 
     <section id="hero">
       <div class="hero-inner">
-        <div class="hero-logo-mobile" aria-hidden="true">
+        <div class="hero-logo-mobile" id="hero-logo-mobile" role="button" tabindex="0" aria-label="홈 — NOW 보기">
           <img src="images/logo.png" alt="" class="hero-logo-mobile-img"
                onerror="this.hidden=true;this.nextElementSibling.hidden=false">
           <span class="hero-logo-mobile-text" hidden>에프앤엘</span>
@@ -207,7 +207,8 @@
       const errorEl = $('pin-error');
       const correct = (EVENT.pin || '000000');
 
-      if (sessionStorage.getItem('pin_ok') === '1') {
+      if (sessionStorage.getItem('pin_ok') === '1' || new URLSearchParams(location.search).get('nowPreview')) {
+        sessionStorage.setItem('pin_ok', '1');
         gate.remove();
         return;
       }
@@ -253,9 +254,12 @@
     $('footer-title').textContent = EVENT.title;
     $('footer-info').textContent  = EVENT.date + '  ·  ' + EVENT.venue;
 
+    const URL_PARAMS = new URLSearchParams(location.search);
+    const NOW_PREVIEW = URL_PARAMS.get('nowPreview');
+
     /* ── 탭 정의 ─────────────────────────────────────────── */
     const TABS = [
-      { id:'briefing',      label:'사전안내', sub:'준비 안내',          icon:'clipboard'  },
+      { id:'briefing',      label:'HOME',    sub:'사전안내',           icon:'home'       },
       { id:'day-0',         label:'Day 1',   sub: EVENT.days[0].date, icon:'calendar'   },
       { id:'day-1',         label:'Day 2',   sub: EVENT.days[1].date, icon:'calendar'   },
       { id:'activities',    label:'즐길거리', sub:'&식사',              icon:'star'       },
@@ -293,6 +297,10 @@
         <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
         <rect x="8" y="2" width="8" height="4" rx="1"/>
         <line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="15" y2="16"/>
+      </svg>`;
+      if (icon === 'home') return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 9.5 12 3l9 6.5"/><path d="M5 10v10h14V10"/>
       </svg>`;
       return '';
     }
@@ -345,33 +353,56 @@
     mobileNav.appendChild(mbSearch);
 
     /* ── 탭 전환 ─────────────────────────────────────────── */
-    function switchTab(tabId) {
+    function switchTab(tabId, opts = {}) {
       closeSearch();
-      if (tabId === activeTab) return;
-      activeTab = tabId;
+      const wasSameTab = tabId === activeTab;
+      if (!wasSameTab) {
+        activeTab = tabId;
 
-      document.querySelectorAll('.sidebar-day-tab').forEach(b => {
-        const tid = b.id.replace('sb-tab-', '');
-        b.classList.toggle('is-active', tid === tabId);
-        b.setAttribute('aria-selected', tid === tabId ? 'true' : 'false');
-      });
-      document.querySelectorAll('[id^="mb-tab-"]').forEach(b => {
-        const tid = b.id.replace('mb-tab-', '');
-        b.classList.toggle('is-active', tid === tabId);
-      });
-      document.querySelectorAll('.main-panel').forEach(p => {
-        const pid = p.id.replace('panel-', '');
-        const wasActive = p.classList.contains('is-active');
-        const nowActive = pid === tabId;
-        p.classList.toggle('is-active', nowActive);
-        if (nowActive && !wasActive) {
-          p.style.animation = 'none';
-          requestAnimationFrame(() => { p.style.animation = ''; });
-        }
-      });
+        document.querySelectorAll('.sidebar-day-tab').forEach(b => {
+          const tid = b.id.replace('sb-tab-', '');
+          b.classList.toggle('is-active', tid === tabId);
+          b.setAttribute('aria-selected', tid === tabId ? 'true' : 'false');
+        });
+        document.querySelectorAll('[id^="mb-tab-"]').forEach(b => {
+          const tid = b.id.replace('mb-tab-', '');
+          b.classList.toggle('is-active', tid === tabId);
+        });
+        document.querySelectorAll('.main-panel').forEach(p => {
+          const pid = p.id.replace('panel-', '');
+          const wasActive = p.classList.contains('is-active');
+          const nowActive = pid === tabId;
+          p.classList.toggle('is-active', nowActive);
+          if (nowActive && !wasActive) {
+            p.style.animation = 'none';
+            requestAnimationFrame(() => { p.style.animation = ''; });
+          }
+        });
+      } else if (!opts.scrollToNow) {
+        return;
+      }
 
-      if (window.innerWidth < 768) window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (opts.scrollToNow) {
+        requestAnimationFrame(() => {
+          document.getElementById('home-now-section')
+            ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }
+
+      if (window.innerWidth < 768 && (!wasSameTab || opts.scrollToNow)) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     }
+
+    document.querySelector('.sidebar-logo')?.addEventListener('click', e => {
+      e.preventDefault();
+      switchTab('briefing', { scrollToNow: true });
+    });
+
+    const heroLogo = $('hero-logo-mobile');
+    const goHomeNow = () => switchTab('briefing', { scrollToNow: true });
+    heroLogo?.addEventListener('click', goHomeNow);
+    heroLogo?.addEventListener('keydown', ev => { if (ev.key === 'Enter') goHomeNow(); });
 
     // 이전 버전 호환 (검색 결과 클릭 시 사용)
     function switchDay(idx) { switchTab(`day-${idx}`); }
@@ -388,7 +419,7 @@
     };
 
     /* ════════════════════════════════════════════════════════
-       패널 0 — 사전안내
+       패널 0 — HOME (NOW + 사전안내)
        ════════════════════════════════════════════════════════ */
     (function buildBriefingPanel() {
       const bf = EVENT.briefing;
@@ -400,22 +431,42 @@
       const inner = document.createElement('div');
       inner.className = 'panel-inner';
       inner.innerHTML = `<div class="panel-heading">
-        <span class="panel-heading-label">사전안내</span>
-        <span class="panel-heading-sub">준비 안내</span>
+        <span class="panel-heading-label">HOME</span>
+        <span class="panel-heading-sub">사전안내</span>
       </div>`;
 
+      if (NOW_PREVIEW) {
+        const banner = document.createElement('div');
+        banner.className = 'now-preview-banner';
+        banner.innerHTML = `<i class="ti ti-eye" aria-hidden="true"></i>
+          <span>미리보기 모드 — 실제 일정과 다를 수 있어요</span>`;
+        inner.appendChild(banner);
+      }
+
       // ── 오늘 기준 NOW 카드 ──
+      const DAY1_ISO = EVENT.days[0].isoDate;
+      const DAY2_ISO = EVENT.days[EVENT.days.length - 1].isoDate;
+
       const todayKey = () => {
+        if (NOW_PREVIEW === 'lunch') return DAY1_ISO;
         const d = new Date(), p = n => String(n).padStart(2, '0');
         return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
       };
-      const DAY1_ISO = EVENT.days[0].isoDate;
-      const DAY2_ISO = EVENT.days[EVENT.days.length - 1].isoDate;
-      const isWorkshopStarted = todayKey() >= DAY1_ISO;
+      const nowMinutes = () => {
+        if (NOW_PREVIEW === 'lunch') return 11 * 60 + 45;
+        const now = new Date();
+        return now.getHours() * 60 + now.getMinutes();
+      };
+
+      const nowSection = document.createElement('section');
+      nowSection.className = 'home-block';
+      nowSection.id = 'home-now-section';
+      nowSection.innerHTML = `<h2 class="home-block-title">NOW</h2>`;
 
       const nowWrap = document.createElement('div');
       nowWrap.id = 'now-card-wrap';
-      inner.appendChild(nowWrap);
+      nowSection.appendChild(nowWrap);
+      inner.appendChild(nowSection);
 
       function renderNowCard() {
         nowWrap.innerHTML = '';
@@ -438,8 +489,7 @@
             <p class="now-sub">이틀간 고생 많으셨어요. 함께해 주셔서 감사합니다!</p>`;
         } else {
           const day = EVENT.days[di];
-          const now = new Date();
-          const mins = now.getHours() * 60 + now.getMinutes();
+          const mins = nowMinutes();
           const parse = t => {
             const m = [...t.matchAll(/(\d{1,2}):(\d{2})/g)].map(x => +x[1] * 60 + +x[2]);
             return { start: m[0] ?? 0, end: m[1] ?? (m[0] ?? 0) + 30 };
@@ -490,6 +540,15 @@
       renderNowCard();
       setInterval(renderNowCard, 60000);
 
+      // ── 사전안내 섹션 ──
+      const briefingSection = document.createElement('section');
+      briefingSection.className = 'home-block';
+      briefingSection.id = 'home-briefing-section';
+      briefingSection.innerHTML = `<h2 class="home-block-title">사전안내</h2>`;
+
+      const briefingBody = document.createElement('div');
+      briefingBody.className = 'home-briefing-body';
+
       // 집합 안내 카드
       const mp = bf.meetingPoint;
       const meetCard = document.createElement('div');
@@ -503,10 +562,10 @@
           target="_blank" rel="noopener">
           ${PIN_SVG} 지도에서 보기
         </a>` : ''}`;
-      inner.appendChild(meetCard);
+      briefingBody.appendChild(meetCard);
 
       // 토글 섹션 빌더
-      function collapsibleSection(title, bodyEl, startOpen) {
+      function collapsibleSection(title, bodyEl, startOpen, nudgeText) {
         const section = document.createElement('div');
         section.className = 'briefing-section is-collapsible' + (startOpen ? ' is-open' : '');
         const head = document.createElement('button');
@@ -523,11 +582,23 @@
         body.className = 'briefing-section-body';
         body.appendChild(bodyEl);
         section.appendChild(head);
+        if (nudgeText) {
+          const nudge = document.createElement('p');
+          nudge.className = 'briefing-section-nudge';
+          nudge.innerHTML = `<i class="ti ti-chevron-down" aria-hidden="true"></i> ${escHtml(nudgeText)}`;
+          nudge.addEventListener('click', () => {
+            if (!section.classList.contains('is-open')) {
+              section.classList.add('is-open');
+              head.setAttribute('aria-expanded', 'true');
+            }
+          });
+          section.appendChild(nudge);
+        }
         section.appendChild(body);
         return section;
       }
 
-      // 준비물 체크리스트 (워크숍 시작 후엔 기본 접힘)
+      // 준비물 체크리스트 (항상 기본 접힘 + 넛지)
       if (bf.checklist && bf.checklist.length) {
         const prepList = document.createElement('div');
         prepList.className = 'prep-list';
@@ -553,7 +624,9 @@
           }
           prepList.appendChild(card);
         });
-        inner.appendChild(collapsibleSection('준비물', prepList, !isWorkshopStarted));
+        briefingBody.appendChild(collapsibleSection(
+          '준비물', prepList, false, '탭해서 출발 전 챙길 것들을 확인해 보세요'
+        ));
       }
 
       // 안내사항
@@ -567,8 +640,11 @@
             <span>${escHtml(n)}</span>`;
           noteList.appendChild(item);
         });
-        inner.appendChild(collapsibleSection('안내사항', noteList, true));
+        briefingBody.appendChild(collapsibleSection('안내사항', noteList, true));
       }
+
+      briefingSection.appendChild(briefingBody);
+      inner.appendChild(briefingSection);
 
       panel.appendChild(inner);
       panelWrap.appendChild(panel);
